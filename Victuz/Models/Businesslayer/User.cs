@@ -5,15 +5,18 @@ namespace Victuz.Models.Businesslayer
     public class User
     {
         [Key]
-        public int userId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        public string userName { get; set; }
+        public string? UserName { get; set; }
         [Required]
-        public string password { get; set; }
+        public string? Password { get; set; }
 
         [Required]
-        public int roleId { get; set; }
-        public Role role { get; set; }
+        public int RoleId { get; set; }
+        public Role? Role { get; set; }
+
+        public ICollection<Post>? Posts { get; set; }
+        public ICollection<GatheringRegistration>? GatheringRegistrations { get; set; }
     }
 }

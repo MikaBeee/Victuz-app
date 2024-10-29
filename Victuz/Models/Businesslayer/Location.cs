@@ -8,6 +8,8 @@ namespace Victuz.Models.Businesslayer
         public int LocId {  get; set; }
 
         [Required]
-        public string LocName { get; set; }
+        public string? LocName { get; set; }
+
+        public ICollection<Gathering>? Gatherings { get; set; }
     }
 }

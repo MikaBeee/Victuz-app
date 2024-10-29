@@ -8,6 +8,8 @@ namespace Victuz.Models.Businesslayer
         public int CatId { get; set; }
 
         [Required]
-        public string CatName { get; set; }
+        public string? CatName { get; set; }
+
+        public ICollection<Gathering>? Gatherings { get; set; }
     }
 }

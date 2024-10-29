@@ -7,6 +7,8 @@ namespace Victuz.Models.Businesslayer
         [Key]
         public int RoleId { get; set; }
         [Required]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }
