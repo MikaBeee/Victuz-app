@@ -18,7 +18,7 @@ namespace Victuz.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connection = "Data Source=LAPTOP-JNCKQ93E\\SQLSERVERSVEN;Initial Catalog=victuz;Integrated Security=True;Trust Server Certificate=True";
+            string connection = "Data Source=.\\SQLSERVERSVEN;Initial Catalog=victuz;Integrated Security=True;Trust Server Certificate=True";
             optionsBuilder.UseSqlServer(connection);
         }
 
