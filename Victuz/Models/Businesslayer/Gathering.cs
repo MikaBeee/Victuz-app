@@ -22,6 +22,9 @@ namespace Victuz.Models.Businesslayer
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
+        [Required]
+        public string? Photopath { get; set; }
+
         public ICollection<GatheringRegistration>? GatheringRegistrations { get; set; }
     }
 }

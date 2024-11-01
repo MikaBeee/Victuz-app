@@ -1,9 +1,5 @@
 ﻿@model Victuz.Models.Businesslayer.Gathering
 
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 
 <html>
@@ -12,50 +8,38 @@
     <title>Details</title>
 </head>
 <body>
+    <div class="container mt-5" style="max-width: auto;">
+        <div class="card" style=" min-height:500px">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-header text-center">
+                        <h3>@Html.DisplayFor(model => model.GatheringTitle)</h3>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Description:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.GatheringDescription)</dd>
 
-<div>
-    <h4>Gathering</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GatheringTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GatheringTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GatheringDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GatheringDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxParticipants)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaxParticipants)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location.LocName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CatName)
-        </dd>
-    </dl>
-</div>
-<div>
+                            <dt class="col-sm-3">Location:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Location)</dd>
+
+
+
+                            <dt class="col-sm-3">Date:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
+
+                            <dt class="col-sm-3">Event Type:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category)</dd>
+                        </dl>
+                    </div> 
+                </div> 
+                
+                
+
+            </div>
+
+            </div>
+        </div>
     <a asp-action="Edit" asp-route-id="@Model?.GatheringId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
