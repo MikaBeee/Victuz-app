@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Victuz.Models.Businesslayer;
 
-namespace Victuz.Models.Businesslayer
+namespace Victuz.Models.Viewmodels
 {
-    public class Role
+    public class RoleVM
     {
-        [Key]
         public int RoleId { get; set; }
-        [Required]
         public string? RoleName { get; set; }
 
-        public ICollection<User>? Users { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }
