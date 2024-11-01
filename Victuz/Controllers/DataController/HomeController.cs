@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Victuz.Models;
 
-namespace Victuz.Controllers
+namespace Victuz.Controllers.DataController
 {
     public class HomeController : Controller
     {
