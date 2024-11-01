@@ -8,20 +8,19 @@
     <title>Details</title>
 </head>
 <body>
-    <div class="container mt-5" style="max-width: auto;">
-        <div class="card" style=" min-height:500px">
+    <div class="container mt-5" style="width: 1300px;">
+        <div class="card" style=" min-height:800px; min-width: 1300px;">
             <div class="row g-0">
                 <div class="col-md-8">
-                    <div class="card-header text-center">
+                    <div class="card-header text-center victuz-blue text-white" style="width: 1300px">
                         <h3>@Html.DisplayFor(model => model.GatheringTitle)</h3>
                     </div>
                     <div class="card-body">
                         <dl class="row">
-                            <dt class="col-sm-3">Description:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.GatheringDescription)</dd>
+
 
                             <dt class="col-sm-3">Location:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Location)</dd>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Location.LocName)</dd>
 
 
 
@@ -29,17 +28,28 @@
                             <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
 
                             <dt class="col-sm-3">Event Type:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category)</dd>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category.CatName)</dd>
                         </dl>
                     </div> 
-                </div> 
-                
+                </div>
+                <div class="col-md-4" style="position: relative; top: 80px">
+                    <img class="card-img-top" style="height: 100%; width: 380px; object-fit: cover; border: inset #004E5C; "
+                         src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
+                         alt="@Model.GatheringTitle" />
+                    <div class="card-body victuz-creme border text-white" style="position: relative; top: 20px; max-width: 380px; min-width: 380px; max-height: auto;">
+                        <dt class="col-sm-3">Description:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.GatheringDescription)</dd>
+                    </div>
+
+                </div>
+                    
+
                 
 
             </div>
-
-            </div>
+            
         </div>
+
     <a asp-action="Edit" asp-route-id="@Model?.GatheringId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
