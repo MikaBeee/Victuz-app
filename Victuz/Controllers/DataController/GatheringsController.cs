@@ -83,16 +83,43 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering)
+        public async Task<IActionResult> Create([Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId,Photopath")] Gathering gathering, IFormFile Photo)
+
         {
+            ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
+            ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             if (ModelState.IsValid)
             {
+                if (Photo != null && Photo.Length > 0)
+                {
+
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+
+                    var fileName = Path.GetFileName(Photo.FileName);
+
+
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Photo.CopyToAsync(stream);
+                    }
+                    gathering.Photopath = "/images/" + fileName;
+
+                }
                 _context.Add(gathering);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
+
+                
             }
-            ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
-            ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             return View(gathering);
         }
 
