@@ -9,7 +9,7 @@ using Victuz.Data;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
 
-namespace Victuz.Controllers
+namespace Victuz.Controllers.DataController
 {
     public class GatheringsController : Controller
     {
@@ -62,11 +62,11 @@ namespace Victuz.Controllers
                     Category = g.Category,
                     CategoryId = g.CategoryId,
                     Location = g.Location,
-                    LocationId = g.LocationId,              
+                    LocationId = g.LocationId,
                 })
                 .ToListAsync();
 
-            return await victuzDB;    
+            return await victuzDB;
 
         }
 

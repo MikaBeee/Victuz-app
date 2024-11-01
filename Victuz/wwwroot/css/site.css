@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.bg-navbar {
+    background-color: #0e616e;
+    background: linear-gradient(180deg, rgba(14,97,110,1) 75%, rgba(14,97,110,0.38063147622330185) 100%);
+}
