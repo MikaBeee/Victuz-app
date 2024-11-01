@@ -62,8 +62,7 @@ namespace Victuz.Controllers
                     Category = g.Category,
                     CategoryId = g.CategoryId,
                     Location = g.Location,
-                    LocationId = g.LocationId,
-                     
+                    LocationId = g.LocationId,              
                 })
                 .ToListAsync();
 
