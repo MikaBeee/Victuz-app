@@ -63,6 +63,7 @@ namespace Victuz.Controllers.DataController
                     CategoryId = g.CategoryId,
                     Location = g.Location,
                     LocationId = g.LocationId,
+                    Photopath = g.Photopath
                 })
                 .ToListAsync();
 
@@ -146,13 +147,14 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering)
+        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId,Photopath")] Gathering gathering)
         {
             if (id != gathering.GatheringId)
             {
                 return NotFound();
             }
 
+            
             if (ModelState.IsValid)
             {
                 try

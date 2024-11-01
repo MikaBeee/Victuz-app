@@ -17,6 +17,8 @@ namespace Victuz.Models.Viewmodels
         public Location? Location { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
+
+        public string? Photopath { get; set; }
         public ICollection<GatheringRegistration>? GatheringRegistrations { get; set; }
     }
 }
