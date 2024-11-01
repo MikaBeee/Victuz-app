@@ -11,23 +11,22 @@ using Victuz.Models.Viewmodels;
 
 namespace Victuz.Controllers.DataController
 {
-    public class UsersController : Controller
+    public class ForumsController : Controller
     {
         private readonly VictuzDB _context;
 
-        public UsersController(VictuzDB context)
+        public ForumsController(VictuzDB context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Forums
         public async Task<IActionResult> Index()
         {
-            var victuzDB = _context.users.Include(u => u.Role);
-            return View(await victuzDB.ToListAsync());
+            return View(await _context.forum.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Forums/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,59 +34,53 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
-            var user = await _context.users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var forum = await _context.forum
+                .FirstOrDefaultAsync(m => m.ForumId == id);
+            if (forum == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(forum);
         }
 
-        public async Task<List<UserVM>> AllUsers()
+        public async Task<List<ForumVM>> AllForums()
         {
-            var victuzDB = _context.users
-                .Include(u => u.Role)
-                .Select(u => new UserVM
+            var victuzDB = _context.forum
+                .Select(f => new ForumVM
                 {
-                    UserId = u.UserId,
-                    UserName = u.UserName,
-                    Password = u.Password,
-                    RoleId = u.RoleId,
-                    Role = u.Role
+                    ForumId = f.ForumId,
+                    Title = f.Title,
+                    Description = f.Description
                 })
                 .ToListAsync();
 
             return await victuzDB;
         }
 
-        // GET: Users/Create
+        // GET: Forums/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Forums/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,UserName,Password,RoleId")] User user)
+        public async Task<IActionResult> Create([Bind("ForumId,Title,Description")] Forum forum)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(forum);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View(user);
+            return View(forum);
         }
 
-        // GET: Users/Edit/5
+        // GET: Forums/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,23 +88,22 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
-            var user = await _context.users.FindAsync(id);
-            if (user == null)
+            var forum = await _context.forum.FindAsync(id);
+            if (forum == null)
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View(user);
+            return View(forum);
         }
 
-        // POST: Users/Edit/5
+        // POST: Forums/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,Password,RoleId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("ForumId,Title,Description")] Forum forum)
         {
-            if (id != user.UserId)
+            if (id != forum.ForumId)
             {
                 return NotFound();
             }
@@ -120,12 +112,12 @@ namespace Victuz.Controllers.DataController
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(forum);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!ForumExists(forum.ForumId))
                     {
                         return NotFound();
                     }
@@ -136,11 +128,10 @@ namespace Victuz.Controllers.DataController
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View(user);
+            return View(forum);
         }
 
-        // GET: Users/Delete/5
+        // GET: Forums/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,35 +139,34 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
-            var user = await _context.users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var forum = await _context.forum
+                .FirstOrDefaultAsync(m => m.ForumId == id);
+            if (forum == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(forum);
         }
 
-        // POST: Users/Delete/5
+        // POST: Forums/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.users.FindAsync(id);
-            if (user != null)
+            var forum = await _context.forum.FindAsync(id);
+            if (forum != null)
             {
-                _context.users.Remove(user);
+                _context.forum.Remove(forum);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool ForumExists(int id)
         {
-            return _context.users.Any(e => e.UserId == id);
+            return _context.forum.Any(e => e.ForumId == id);
         }
     }
 }

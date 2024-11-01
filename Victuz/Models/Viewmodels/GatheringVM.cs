@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Victuz.Models.Businesslayer;
+﻿using Victuz.Models.Businesslayer;
 
 namespace Victuz.Models.Viewmodels
 {

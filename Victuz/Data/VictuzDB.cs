@@ -8,7 +8,7 @@ namespace Victuz.Data
     public class VictuzDB : DbContext
     {
         public DbSet<Gathering> gathering { get; set; }
-        public DbSet<GatheringRegistration> activitieregistration { get; set; }
+        public DbSet<GatheringRegistration> gatheringRegistration { get; set; }
         public DbSet<Category> categorie { get; set; }
         public DbSet<Forum> forum { get; set; }
         public DbSet<Location> location { get; set; }
