@@ -8,40 +8,41 @@
     <title>Details</title>
 </head>
 <body>
-    <div class="container mt-5" style="max-width: auto;">
-        <div class="card" style=" min-height:500px">
-            <div class="row g-0">
+    <div class="container mt-5 font" style="width: 1300px; min-width: 1300px;">
+        <div class="card gatheringdetails" style="min-height:750px">
+            <div class="row g-0 ">
                 <div class="col-md-8">
-                    <div class="card-header text-center">
-                        <h3>@Html.DisplayFor(model => model.GatheringTitle)</h3>
-                    </div>
-                    <div class="card-body">
+                    
+                    <div class="card-body ">
                         <dl class="row">
-                            <dt class="col-sm-3">Description:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.GatheringDescription)</dd>
+                            <dd class="fw-bold card-title" style="font-size: xx-large" >@Html.DisplayFor(model => model.GatheringTitle)</dd>
 
-                            <dt class="col-sm-3">Location:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Location)</dd>
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Location.LocName)</dd>
+
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Date)</dd>
+
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Category.CatName)</dd>
 
 
 
-                            <dt class="col-sm-3">Date:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
+                            <dd class="button" style="background-color: #0e616e; width: 40%; position: relative; top: 400px; ">
+                                <a href="@Url.Action("Create", "Tickets", new {eventId = Model.GatheringId})" class="button text-white" style="font-size: 25px; font-weight: 600;" >Reserveren</a>
+                            </dd>
+                    </div>
+                </div>
+                <div class="col-md-4" style="position: relative; top: 20px; right: 25%">
+                    <img class="card-img-top" style="height: 400px; width: auto; object-fit: cover; border: inset #004E5C; "
+                         src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
+                         alt="@Model.GatheringTitle" />
+                    <div style="position: relative; top: 20px;">
+                        <b class="col-sm-3" style="font-size: large">Beschrijving</b>
+                        <div class="card-body forum-container border text-white rounded" style="position: relative;  width: 600px; max-height: auto; height: 200px;">
+                            <t class="col-sm-9" style="font-size: large"> @Html.DisplayFor(model => model.GatheringDescription)</t>
+                        </div>
+                    </div>
 
-                            <dt class="col-sm-3">Event Type:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category)</dd>
-                        </dl>
-                    </div> 
-                </div> 
-                
-                
-
-            </div>
-
-            </div>
+                </div>
+            </div>    
         </div>
-    <a asp-action="Edit" asp-route-id="@Model?.GatheringId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
 </body>
 </html>
