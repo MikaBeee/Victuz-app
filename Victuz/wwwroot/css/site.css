@@ -211,7 +211,7 @@ select{
     .login-button:hover {
         background-color: #003B4A;
     }
-}
+
 
 .gatheringdetails {
     flex: 0 0 25%;
