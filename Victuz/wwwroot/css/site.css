@@ -1,4 +1,5 @@
 html {
+  font-family: serif;
   font-size: 14px;
 }
 
@@ -19,9 +20,75 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: serif;
 }
 
 .bg-navbar {
     background-color: #0e616e;
     background: linear-gradient(180deg, rgba(14,97,110,1) 75%, rgba(14,97,110,0.38063147622330185) 100%);
+}
+
+.font {
+    font-family: serif;
+}
+
+.activities {
+    width: 80%;
+    margin-top: 20px;
+}
+
+.activities-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    background-color: #6C8A8D;
+    border-radius: 8px;
+}
+
+.activity {
+    flex: 0 0 25%;
+    scroll-snap-align: start;
+    background-color: #f0f0f0;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling voor Forum */
+.forum {
+    width: 80%;
+    margin-top: 30px;
+}
+
+.forum-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    background-color: #B6AF82;
+    border-radius: 8px;
+}
+
+.forum-post {
+    flex: 0 0 25%;
+    scroll-snap-align: start;
+    background-color: #f0f0f0;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar Styling */
+.activities-container::-webkit-scrollbar,
+.forum-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.activities-container::-webkit-scrollbar-thumb,
+.forum-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
 }
