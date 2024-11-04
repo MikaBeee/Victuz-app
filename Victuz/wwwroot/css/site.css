@@ -41,7 +41,7 @@ body {
     display: flex;
     overflow-x: auto;
     padding: 10px;
-    background-color: #004E5C;
+    background-color: #6C8A8D;
     border-radius: 8px;
 }
 
@@ -94,7 +94,7 @@ body {
 
 .my-activities-button {
     background-color: #B6AF82;
-    color: #004E5C;
+    color: #6C8A8D;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
@@ -116,7 +116,7 @@ body {
 }
 
 .activity-item {
-    background-color: #004E5C;
+    background-color: #6C8A8D;
     color: white;
     padding: 15px;
     border-radius: 5px;
@@ -124,7 +124,7 @@ body {
 }
 
 .new-discussion-button {
-    background-color: #004E5C;
+    background-color: #6C8A8D;
     color: #fff;
     border: none;
     padding: 12px 24px;
@@ -147,12 +147,19 @@ body {
 
 .forum-item {
     background-color: #D4B07E;
-    color: #004E5C;
+    color: #6C8A8D;
     padding: 20px;
     border-radius: 5px;
     font-size: 18px;
-    flex: 0 0 calc(25% - 15px); 
-    box-sizing: border-box; 
+    flex: 0 0 calc(25% - 15px);
+    box-sizing: border-box;
+}
+
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
 }
 
 .login-container {
@@ -160,10 +167,9 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 300px; 
+    width: 600px; 
     text-align: center;
 }
-
 
 .login-form-group {
     margin-bottom: 15px; 
@@ -171,7 +177,8 @@ body {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+select{
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -181,7 +188,7 @@ input[type="password"] {
 .signup-link {
     display: block;
     margin: 15px 0;
-    color: #004E5C;
+    color: #6C8A8D;
     text-decoration: none;
 }
 
@@ -191,13 +198,13 @@ input[type="password"] {
 
 
 .login-button {
-    background-color: #004E5C;
+    background-color: #6C8A8D;
     color: #fff;
     border: none;
     padding: 12px;
     font-size: 16px;
-    border-radius: 5px; 
-    cursor: pointer; 
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 

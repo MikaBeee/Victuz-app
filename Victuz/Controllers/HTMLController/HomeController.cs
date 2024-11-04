@@ -38,6 +38,11 @@ namespace Victuz.Controllers.HTMLController
             return View();
         }
 
+        public IActionResult AccountReg()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
