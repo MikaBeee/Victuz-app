@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Victuz.Models;
+using Victuz.Data;
 
 namespace Victuz.Controllers.HTMLController
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly VictuzDB _context;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -30,7 +32,8 @@ namespace Victuz.Controllers.HTMLController
 
         public IActionResult Forum()
         {
-            return View();
+            var forums = _context.forum.ToList();
+            return View(forums);
         }
 
         public IActionResult Login()
