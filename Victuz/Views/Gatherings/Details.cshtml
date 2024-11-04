@@ -8,8 +8,8 @@
     <title>Details</title>
 </head>
 <body>
-    <div class="container mt-5 font" style="width: 1300px;">
-        <div class="card gatheringdetails" style=" min-height:800px; min-width: 1300px;">
+    <div class="container mt-5 font" style="width: 1300px; min-width: 1300px;">
+        <div class="card gatheringdetails" style="min-height:750px">
             <div class="row g-0 ">
                 <div class="col-md-8">
                     
@@ -22,11 +22,16 @@
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Date)</dd>
 
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Category.CatName)</dd>
-                        </dl>
-                    </div> 
+
+
+
+                            <dd class="button" style="background-color: #0e616e; width: 40%; position: relative; top: 400px; ">
+                                <a href="@Url.Action("Create", "Tickets", new {eventId = Model.GatheringId})" class="button text-white" style="font-size: 25px; font-weight: 600;" >Reserveren</a>
+                            </dd>
+                    </div>
                 </div>
-                <div class="col-md-4" style="position: relative; top: 20px; right: 20%">
-                    <img class="card-img-top" style="height: auto; width: 600px; object-fit: cover; border: inset #004E5C; "
+                <div class="col-md-4" style="position: relative; top: 20px; right: 25%">
+                    <img class="card-img-top" style="height: 400px; width: auto; object-fit: cover; border: inset #004E5C; "
                          src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
                          alt="@Model.GatheringTitle" />
                     <div style="position: relative; top: 20px;">
@@ -35,18 +40,9 @@
                             <t class="col-sm-9" style="font-size: large"> @Html.DisplayFor(model => model.GatheringDescription)</t>
                         </div>
                     </div>
-                    
 
                 </div>
-                    
-
-                
-
-            </div>
-            
+            </div>    
         </div>
-
-
-</div>
 </body>
 </html>

@@ -23,7 +23,9 @@ namespace Victuz.Controllers.DataController
         // GET: Gatherings      //View specific to the administrator
         public async Task<IActionResult> Index()
         {
-            var victuzDB = _context.gathering.Include(g => g.Category).Include(g => g.Location);
+            var victuzDB = _context.gathering
+                .Include(g => g.Category)
+                .Include(g => g.Location);
             return View(await victuzDB.ToListAsync());
         }
 
@@ -48,27 +50,12 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gathering/AlLGatherings     //Possible for anyone
-        public async Task<List<GatheringVM>> AllGatherings()
+        public async Task<IActionResult> AllGatherings()
         {
             var victuzDB = _context.gathering
                 .Include(g => g.Category)
-                .Include(g => g.Location)
-                .Select(g => new GatheringVM
-                {
-                    GatheringId = g.GatheringId,
-                    GatheringTitle = g.GatheringTitle,
-                    GatheringDescription = g.GatheringDescription,
-                    MaxParticipants = g.MaxParticipants,
-                    Category = g.Category,
-                    CategoryId = g.CategoryId,
-                    Location = g.Location,
-                    LocationId = g.LocationId,
-                    Photopath = g.Photopath
-                })
-                .ToListAsync();
-
-            return await victuzDB;
-
+                .Include(g => g.Location);
+            return View(await victuzDB.ToListAsync());
         }
 
         // GET: Gatherings/Create
