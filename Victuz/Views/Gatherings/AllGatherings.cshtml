@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<Victuz.Models.Businesslayer.Gathering>
 
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 
 <html>
@@ -12,62 +8,35 @@
     <title>View</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GatheringTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GatheringDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxParticipants)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GatheringTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GatheringDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxParticipants)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.LocName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CatName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GatheringId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GatheringId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GatheringId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+<div style="position: relative; top: 30px;">
+    <div class="fw-bold" style="font-size: xx-large">
+            Activiteiten 
+        <p class="button-creme" style="background-color: #D4B07E; margin: 0; padding: 10px 15px; border-radius: 5px; position: relative; left: 78%;">
+            <a class="no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="MyEvents">Mijn activiteiten</a>
+        </p>
+        </div>
+    @foreach (var item in Model) {
+
+            <a asp-action="Details" asp-route-id="@item.GatheringId" class="no-underline">
+            <div class="activitylist text-white no-underline"style="display: flex; ">
+
+                <img class="card-img-top"
+                     style="height: 200px; width: 318px; object-fit: cover; border: inset #004E5C; margin-right: 20px;"
+                     src="@(item.Photopath != null ? Url.Content(item.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
+                     alt="@item.GatheringTitle" />
+                <div style="flex-grow: 1;">
+                    <h1 class="fw-bold">
+                        @Html.DisplayFor(modelItem => item.GatheringTitle)
+                    </h1>
+                    <p style="font-size: 20px;">
+                        @Html.DisplayFor(modelItem => item.GatheringDescription)
+                    </p>
+                </div>
+            </div>
+            </a>
+    }
+    </div>
 </body>
 </html>

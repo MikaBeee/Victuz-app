@@ -23,7 +23,9 @@ namespace Victuz.Controllers.DataController
         // GET: Gatherings      //View specific to the administrator
         public async Task<IActionResult> Index()
         {
-            var victuzDB = _context.gathering.Include(g => g.Category).Include(g => g.Location);
+            var victuzDB = _context.gathering
+                .Include(g => g.Category)
+                .Include(g => g.Location);
             return View(await victuzDB.ToListAsync());
         }
 
@@ -48,26 +50,12 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gathering/AlLGatherings     //Possible for anyone
-        public async Task<List<GatheringVM>> AllGatherings()
+        public async Task<IActionResult> AllGatherings()
         {
             var victuzDB = _context.gathering
                 .Include(g => g.Category)
-                .Include(g => g.Location)
-                .Select(g => new GatheringVM
-                {
-                    GatheringId = g.GatheringId,
-                    GatheringTitle = g.GatheringTitle,
-                    GatheringDescription = g.GatheringDescription,
-                    MaxParticipants = g.MaxParticipants,
-                    Category = g.Category,
-                    CategoryId = g.CategoryId,
-                    Location = g.Location,
-                    LocationId = g.LocationId,
-                })
-                .ToListAsync();
-
-            return await victuzDB;
-
+                .Include(g => g.Location);
+            return View(await victuzDB.ToListAsync());
         }
 
         // GET: Gatherings/Create
@@ -83,16 +71,43 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering)
+        public async Task<IActionResult> Create([Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering, IFormFile Photo)
+
         {
+            ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
+            ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             if (ModelState.IsValid)
             {
+                if (Photo != null && Photo.Length > 0)
+                {
+
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+
+                    var fileName = Path.GetFileName(Photo.FileName);
+
+
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Photo.CopyToAsync(stream);
+                    }
+                    gathering.Photopath = "/images/" + fileName;
+
+                }
                 _context.Add(gathering);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
+
+                
             }
-            ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
-            ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             return View(gathering);
         }
 
@@ -119,13 +134,14 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering)
+        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId,Photopath")] Gathering gathering)
         {
             if (id != gathering.GatheringId)
             {
                 return NotFound();
             }
 
+            
             if (ModelState.IsValid)
             {
                 try
