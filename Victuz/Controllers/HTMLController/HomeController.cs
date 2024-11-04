@@ -23,6 +23,21 @@ namespace Victuz.Controllers.HTMLController
             return View();
         }
 
+        public IActionResult Activities()
+        {
+            return View();
+        }
+
+        public IActionResult Forum()
+        {
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
