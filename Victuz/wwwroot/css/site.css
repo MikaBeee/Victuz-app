@@ -48,6 +48,7 @@ body {
 .activity {
     flex: 0 0 25%;
     scroll-snap-align: start;
+    box-sizing: border-box;
     background-color: #f0f0f0;
     margin: 10px;
     padding: 20px;
@@ -56,7 +57,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Styling voor Forum */
 .forum {
     width: 80%;
     margin-top: 30px;
@@ -81,7 +81,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Scrollbar Styling */
 .activities-container::-webkit-scrollbar,
 .forum-container::-webkit-scrollbar {
     height: 8px;
@@ -92,3 +91,116 @@ body {
     background-color: #888;
     border-radius: 10px;
 }
+
+.my-activities-button {
+    background-color: #B6AF82;
+    color: #004E5C;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    float: right;
+}
+
+    .my-activities-button:hover {
+        background-color: #9E8F70;
+    }
+
+.activity-list {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    background-color: #004E5C;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.new-discussion-button {
+    background-color: #004E5C;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .new-discussion-button:hover {
+        background-color: #003B4A;
+    }
+
+.forum-list {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px; 
+}
+
+.forum-item {
+    background-color: #D4B07E;
+    color: #004E5C;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    flex: 0 0 calc(25% - 15px); 
+    box-sizing: border-box; 
+}
+
+.login-container {
+    background-color: #fff; 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px; 
+    text-align: center;
+}
+
+
+.login-form-group {
+    margin-bottom: 15px; 
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+}
+
+.signup-link {
+    display: block;
+    margin: 15px 0;
+    color: #004E5C;
+    text-decoration: none;
+}
+
+    .signup-link:hover {
+        text-decoration: underline; 
+    }
+
+
+.login-button {
+    background-color: #004E5C;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+
+    .login-button:hover {
+        background-color: #003B4A;
+    }
