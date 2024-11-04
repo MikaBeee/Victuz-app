@@ -8,38 +8,39 @@
     <title>Details</title>
 </head>
 <body>
-    <div class="container mt-5" style="width: 1300px;">
-        <div class="card" style=" min-height:800px; min-width: 1300px;">
-            <div class="row g-0">
+    <div class="container mt-5 font" style="width: 1300px;">
+        <div class="card subbody-bg" style=" min-height:800px; min-width: 1300px;">
+            <div class="row g-0 ">
                 <div class="col-md-8">
-                    <div class="card-header text-center victuz-blue text-white" style="width: 1300px">
-                        <h3>@Html.DisplayFor(model => model.GatheringTitle)</h3>
-                    </div>
-                    <div class="card-body">
+                    
+                    <div class="card-body ">
                         <dl class="row">
+                            <dd class="fw-bold card-title" style="font-size: xx-large" >@Html.DisplayFor(model => model.GatheringTitle)</dd>
 
 
-                            <dt class="col-sm-3">Location:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Location.LocName)</dd>
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Location.LocName)</dd>
 
 
 
-                            <dt class="col-sm-3">Date:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
 
-                            <dt class="col-sm-3">Event Type:</dt>
-                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category.CatName)</dd>
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Date)</dd>
+
+                            <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Category.CatName)</dd>
                         </dl>
                     </div> 
                 </div>
-                <div class="col-md-4" style="position: relative; top: 80px">
-                    <img class="card-img-top" style="height: 100%; width: 380px; object-fit: cover; border: inset #004E5C; "
+                <div class="col-md-4" style="position: relative; top: 80px; right: 20%">
+                    <img class="card-img-top" style="height: auto; width: 600px; object-fit: cover; border: inset #004E5C; "
                          src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
                          alt="@Model.GatheringTitle" />
-                    <div class="card-body victuz-creme border text-white" style="position: relative; top: 20px; max-width: 380px; min-width: 380px; max-height: auto;">
-                        <dt class="col-sm-3">Description:</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.GatheringDescription)</dd>
+                    <div style="position: relative; top: 20px;">
+                        <b class="col-sm-3" style="font-size: large">Beschrijving</b>
+                        <div class="card-body victuz-creme border text-white rounded" style="position: relative; top: 3px;  width: 600px; max-height: auto; height: 200px;">
+
+                            <t class="col-sm-9" style="font-size: large"> @Html.DisplayFor(model => model.GatheringDescription)</t>
+                        </div>
                     </div>
+                    
 
                 </div>
                     
@@ -50,8 +51,7 @@
             
         </div>
 
-    <a asp-action="Edit" asp-route-id="@Model?.GatheringId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
 </div>
 </body>
 </html>
