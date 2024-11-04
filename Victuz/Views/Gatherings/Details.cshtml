@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container mt-5 font" style="width: 1300px;">
-        <div class="card subbody-bg" style=" min-height:800px; min-width: 1300px;">
+        <div class="card gatheringdetails" style=" min-height:800px; min-width: 1300px;">
             <div class="row g-0 ">
                 <div class="col-md-8">
                     
@@ -17,11 +17,7 @@
                         <dl class="row">
                             <dd class="fw-bold card-title" style="font-size: xx-large" >@Html.DisplayFor(model => model.GatheringTitle)</dd>
 
-
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Location.LocName)</dd>
-
-
-
 
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Date)</dd>
 
@@ -29,14 +25,13 @@
                         </dl>
                     </div> 
                 </div>
-                <div class="col-md-4" style="position: relative; top: 80px; right: 20%">
+                <div class="col-md-4" style="position: relative; top: 20px; right: 20%">
                     <img class="card-img-top" style="height: auto; width: 600px; object-fit: cover; border: inset #004E5C; "
                          src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
                          alt="@Model.GatheringTitle" />
                     <div style="position: relative; top: 20px;">
                         <b class="col-sm-3" style="font-size: large">Beschrijving</b>
-                        <div class="card-body victuz-creme border text-white rounded" style="position: relative; top: 3px;  width: 600px; max-height: auto; height: 200px;">
-
+                        <div class="card-body forum-container border text-white rounded" style="position: relative;  width: 600px; max-height: auto; height: 200px;">
                             <t class="col-sm-9" style="font-size: large"> @Html.DisplayFor(model => model.GatheringDescription)</t>
                         </div>
                     </div>
