@@ -20,6 +20,8 @@ namespace Victuz.Controllers.DataController
             _context = context;
         }
 
+
+     
         // GET: Roles
         public async Task<IActionResult> Index()
         {
