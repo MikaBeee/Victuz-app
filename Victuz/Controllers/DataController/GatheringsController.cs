@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Victuz.Data;
+using Victuz.Migrations;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
 
@@ -106,7 +108,7 @@ namespace Victuz.Controllers.DataController
                 return RedirectToAction(nameof(Index));
 
 
-                
+
             }
             return View(gathering);
         }
@@ -119,11 +121,15 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
-            var gathering = await _context.gathering.FindAsync(id);
+            var gathering = await _context.gathering
+                .FindAsync(id);
             if (gathering == null)
             {
                 return NotFound();
             }
+
+
+
             ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
             ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             return View(gathering);
@@ -134,19 +140,60 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId,Photopath")] Gathering gathering)
+        public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering, IFormFile? Photo)
         {
             if (id != gathering.GatheringId)
             {
                 return NotFound();
             }
 
-            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(gathering);
+                    var originalGathering = await _context.gathering.AsNoTracking().FirstOrDefaultAsync(g => g.GatheringId == id);
+                    if (originalGathering == null)
+                    {
+                        return NotFound();
+                    }
+                    if (Photo == null)
+                    {
+
+                        gathering.Photopath = originalGathering.Photopath;
+                    }
+                    else
+                    {
+                        string deletethis = "wwwroot" + originalGathering.Photopath;
+                        try
+                        {
+                            System.IO.File.Delete(deletethis);
+                        }
+                        catch (IOException ex)
+                        {
+                            Console.WriteLine($"Error deleting file: {ex.Message}");
+                        }
+
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+
+                        var fileName = Path.GetFileName(Photo.FileName);
+
+
+                        var filePath = Path.Combine(uploadsFolder, fileName);
+
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await Photo.CopyToAsync(stream);
+                        }
+
+                        gathering.Photopath = "/images/" + fileName;
+                    }
+                        _context.Entry(gathering).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -162,6 +209,7 @@ namespace Victuz.Controllers.DataController
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName", gathering.CategoryId);
             ViewData["LocationId"] = new SelectList(_context.location, "LocId", "LocName", gathering.LocationId);
             return View(gathering);
@@ -192,6 +240,20 @@ namespace Victuz.Controllers.DataController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var originalGathering = await _context.gathering.AsNoTracking().FirstOrDefaultAsync(g => g.GatheringId == id);
+            if (originalGathering == null)
+            {
+                return NotFound();
+            }
+            string deletethis = "wwwroot" + originalGathering.Photopath;
+            try
+            {
+                System.IO.File.Delete(deletethis);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Error deleting file: {ex.Message}");
+            }
             var gathering = await _context.gathering.FindAsync(id);
             if (gathering != null)
             {
