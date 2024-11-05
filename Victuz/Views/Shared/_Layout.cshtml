@@ -28,9 +28,25 @@
                         <li class="nav-item font">
                             <a class="nav-link text-white" asp-area="" asp-controller="Forums" asp-action="AllForums">Forum</a>
                         </li>
-                        <li class="nav-item font">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Login">Log in</a>
-                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item font">
+                                <form class="nav-link text-white" asp-controller="Users" asp-action="Logout" method="post" style="display: inline">
+                                    <!-- Ensures the form is inline -->
+                                    <button type="submit" class="btn text-white">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item font">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Login">Log in</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>

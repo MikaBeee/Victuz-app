@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -182,22 +184,34 @@ namespace Victuz.Controllers.DataController
             return View();
         }
 
-        // POST: User/Login
+        // POST: Login a user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _context.users.FirstOrDefaultAsync(u => u.UserName == model.UserName);
+                var user = await _context.users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
+
                 if (user != null)
                 {
-                    var passwordHasher = new PasswordHasher<User>();
-                    var result = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+
+
+                    var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
                     if (result == PasswordVerificationResult.Success)
                     {
-                        // Login logic, e.g., setting cookies or session
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, model.UserName),
+                            new Claim(ClaimTypes.Role, user.RoleId == 1 ? "Admin" : "User")
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+
+                        await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));
+
                         return RedirectToAction("Index", "Home");
 
                     }
@@ -222,21 +236,53 @@ namespace Victuz.Controllers.DataController
         }
 
 
-        //Post create/User
+        //Post Register a new user
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AccountReg([Bind("UserId, UserName,Password, RoleId")] User user)
+        public async Task<IActionResult> AccountReg([Bind("UserId, UserName, Password, RoleId, ConfirmPassword")] RegisterVM registerVM)
         {
             if (ModelState.IsValid)
             {
-                user.Password = _passwordHasher.HashPassword(user, user.Password);
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Check if the username already exists
+                var existingUser = await _context.users
+                    .FirstOrDefaultAsync(u => u.UserName == registerVM.UserName);
+
+                if (existingUser != null)
+                {
+                    // Add a model state error if the username is taken
+                    ModelState.AddModelError("UserName", "Username is already taken.");
+                }
+                else
+                {
+                    // Create a new User object from the view model
+                    var user = new User
+                    {
+                        UserName = registerVM.UserName,
+                        Password = _passwordHasher.HashPassword(new User(), registerVM.Password), // Hash the password
+                        RoleId = registerVM.RoleId
+                    };
+
+                    // Add user to the database
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View();
+
+            // If we got this far, something failed; redisplay the form with the same model
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", registerVM.RoleId);
+            return View(registerVM); // Pass the RegisterVM back to the view
         }
+
+        //LOGOUT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("MyCookieAuth");
+            return RedirectToAction("Index", "Home"); // Redirect to home or login page after logout
+        }
+
         private bool UserExists(int id)
         {
             return _context.users.Any(e => e.UserId == id);

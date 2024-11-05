@@ -13,7 +13,7 @@ namespace Victuz.Models.Viewmodels
 
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The passwords do not match.")]
+        [Compare("Password", ErrorMessage = "De wachtwoorden komen niet overeen.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
