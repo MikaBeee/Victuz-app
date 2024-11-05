@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Victuz.Models;
 using Victuz.Data;
+using Victuz.Models.Businesslayer;
 
 namespace Victuz.Controllers.HTMLController
 {
@@ -18,7 +19,13 @@ namespace Victuz.Controllers.HTMLController
 
         public IActionResult Index()
         {
-            return View();
+            var model = new OrderViewModel
+            {
+                gatherings = _context.gathering.ToList() ?? new List<Gathering>(),
+                forums = _context.forum.ToList() ?? new List<Forum>()
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()
