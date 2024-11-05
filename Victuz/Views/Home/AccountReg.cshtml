@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Victuz.Models.Viewmodels.RegisterVM
+
+@{
     ViewData["Title"] = "Login Page";
 }
 
@@ -14,27 +16,37 @@
         <div class="login-container">
             <h1>Aanmelden</h1>
             <form class="login-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="login-form-group">
-                    <label for="Username">Gebruikersnaam</label>
-                    <input type="text" id="username" name="username" required>
+                    <label asp-for="UserName">Gebruikersnaam</label>
+                    <input asp-for="UserName">
                 </div>
                 <div class="login-form-group">
-                    <label for="Password">Wachtwoord</label>
-                    <input type="password" id="password" name="password" required>
+                    <label asp-for="Password">Wachtwoord</label>
+                    <input asp-for="Password">
                 </div>
                 <div class="login-form-group">
-                    <label for="Password">Bevestig wachtwoord</label>
-                    <input type="password" id="password" name="password" required>
+                    <label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
+                    <input asp-for="ConfirmPassword">
                 </div>
                 <div class="login-form-group">
-                    <label for="Role">Rol</label>
+                    <label asp-for="RoleId" class="control-label">Rol</label>
+                    <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                    @* <label for="Role">Rol</label>
                     <select id="role" name="role" required>
                         <option value="" disabled selected>Kies een rol</option> <!-- Placeholder -->
                         <option value="user">User</option>
-                    </select>
+                    </select> *@
                 </div>
-                <button type="submit" class="custom-btn">Aanmelden</button>
+                <button type="submit" value="Create" class="custom-btn">Aanmelden</button>
             </form>
         </div>
     </div>
 </body>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

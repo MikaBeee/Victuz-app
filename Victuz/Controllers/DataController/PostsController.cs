@@ -84,7 +84,7 @@ namespace Victuz.Controllers.DataController
         public async Task<IActionResult> Create([Bind("PostId,UserId,ForumId,Content,PostedDate")] Post post)
         {
             if (ModelState.IsValid)
-            {
+            { 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

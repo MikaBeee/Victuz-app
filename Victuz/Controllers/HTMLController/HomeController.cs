@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using Victuz.Models;
 using Victuz.Data;
+using Victuz.Models.Businesslayer;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Victuz.Controllers.HTMLController
 {
@@ -44,8 +46,26 @@ namespace Victuz.Controllers.HTMLController
 
         public IActionResult AccountReg()
         {
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
             return View();
         }
+
+
+        //Post create/User
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AccountReg([Bind("UserId, UserName,Password, RoleId")] User user)
+        {
+            if (ModelState.IsValid) 
+            { 
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
+            return View();
+                }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
