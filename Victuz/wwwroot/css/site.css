@@ -329,17 +329,17 @@ select{
     }
 
 .center-container-act {
-    display: flex;
+    display: auto;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; 
+    min-height: 80vh; 
     padding: 20px; 
     box-sizing: border-box; 
 }
 
 .form-act {
-    max-width: 320px;
-    width: 100%;
+    max-width: 500px;
+    width: 120%;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0px 0px 0px 4px rgba(212,176,126);
@@ -398,6 +398,45 @@ select{
 
     .submit-act:hover {
         background-color: #2d3748; 
+    }
+
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+    color: #e1e1e1;
+    cursor: pointer;
+    position: relative;
+    background: none;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: color;
+}
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus {
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0%;
+        height: 2px;
+        background-color: #fff;
+        transition: width 400ms cubic-bezier(0.25, 0.8, 0.25, 1), left 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link:focus::after {
+        width: 100%;
+        left: 0;
+    }
+
+tr:hover {
+    background-color: #D4B07E;
+}
     }
 
 .new-post-btn {
