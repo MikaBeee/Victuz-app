@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace Victuz.Controllers.DataController
     public class UsersController : Controller
     {
         private readonly VictuzDB _context;
-
+        private readonly PasswordHasher<User> _passwordHasher;
         public UsersController(VictuzDB context)
         {
+
             _context = context;
+            _passwordHasher = new PasswordHasher<User>();
         }
 
         // GET: Users
@@ -174,6 +177,66 @@ namespace Victuz.Controllers.DataController
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: User/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _context.users.FirstOrDefaultAsync(u => u.UserName == model.UserName);
+                if (user != null)
+                {
+                    var passwordHasher = new PasswordHasher<User>();
+                    var result = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+                    if (result == PasswordVerificationResult.Success)
+                    {
+                        // Login logic, e.g., setting cookies or session
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+            }
+            return View(model);
+        }
+
+
+        public IActionResult AccountReg()
+        {
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
+            return View();
+        }
+
+
+        //Post create/User
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AccountReg([Bind("UserId, UserName,Password, RoleId")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                user.Password = _passwordHasher.HashPassword(user, user.Password);
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
+            return View();
+        }
         private bool UserExists(int id)
         {
             return _context.users.Any(e => e.UserId == id);

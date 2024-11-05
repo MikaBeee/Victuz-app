@@ -15,38 +15,30 @@
     <div class="login-body">
         <div class="login-container">
             <h1>Aanmelden</h1>
-            <form class="login-form">
+            <form asp-action="AccountReg" method="post" class="login-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="login-form-group">
                     <label asp-for="UserName">Gebruikersnaam</label>
-                    <input asp-for="UserName">
+                    <input asp-for="UserName" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="login-form-group">
                     <label asp-for="Password">Wachtwoord</label>
-                    <input asp-for="Password">
+                    <input asp-for="Password" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="login-form-group">
                     <label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
-                    <input asp-for="ConfirmPassword">
+                    <input asp-for="ConfirmPassword" type="password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="login-form-group">
                     <label asp-for="RoleId" class="control-label">Rol</label>
                     <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
-                    @* <label for="Role">Rol</label>
-                    <select id="role" name="role" required>
-                        <option value="" disabled selected>Kies een rol</option> <!-- Placeholder -->
-                        <option value="user">User</option>
-                    </select> *@
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
                 </div>
-                <button type="submit" value="Create" class="custom-btn">Aanmelden</button>
+                <button type="submit" class="custom-btn">Aanmelden</button>
             </form>
         </div>
     </div>
 </body>
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
