@@ -4,27 +4,37 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="forum-item">
+    <h3 class="forum-title">@Html.DisplayFor(model => model.Title)</h3>
+    <p class="forum-desc">@Html.DisplayFor(model => model.Description)</p>
+</div>
+<br />
 
 <div>
-    <h4>Forum</h4>
+    <div class="new-post-btn">
+        <h4>Posts</h4>
+        <form asp-controller="Posts" asp-action="Create" asp-route-id="@Model.ForumId" method="get">
+            <input type="hidden" name="ForumId" value="@Model.ForumId" />
+            <button class="custom-btn button-creme">
+                Nieuwe post
+            </button>
+        </form>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ForumId">Edit</a> |
-    <a asp-action="AllForums">Back to List</a>
+    @if(Model.Posts != null && Model.Posts.Any())
+    {
+        @foreach(var post in Model.Posts)
+        {
+            <div class="forum-item">
+                <p class="forum-title">by @post.User.UserName</p>
+                <p class="forum-title">on @post.PostedDate.ToString("g")</p>
+                <hr style="color: #000"/>
+                <p class ="forum-desc">@post.Content</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Geen posts beschikbaar voor dit forum.</p>
+    }
 </div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -69,11 +70,11 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public IActionResult Create(int forumid)
         {
             ViewData["ForumId"] = new SelectList(_context.forum, "ForumId", "Title");
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password");
-            return View();
+            ViewData["UserId"] = new SelectList(_context.users, "UserId", "UserName");
+            return View(new Post { ForumId = forumid});
         }
 
         // POST: Posts/Create
@@ -83,14 +84,19 @@ namespace Victuz.Controllers.DataController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,UserId,ForumId,Content,PostedDate")] Post post)
         {
+            post.PostedDate = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Forums", new { id = post.ForumId });
             }
             ViewData["ForumId"] = new SelectList(_context.forum, "ForumId", "Title", post.ForumId);
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password", post.UserId);
+            ViewData["UserId"] = new SelectList(_context.users, "UserId", "UserName", post.UserId);
+
+            ViewBag.InputValues = post;
+
             return View(post);
         }
 

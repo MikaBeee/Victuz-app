@@ -13,11 +13,11 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
+                <label asp-for="User" class="control-label"></label>
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="ForumId" class="control-label"></label>
+                <label asp-for="Forum" class="control-label"></label>
                 <select asp-for="ForumId" class ="form-control" asp-items="ViewBag.ForumId"></select>
             </div>
             <div class="form-group">
@@ -26,19 +26,30 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostedDate" class="control-label"></label>
-                <input asp-for="PostedDate" class="form-control" />
-                <span asp-validation-for="PostedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="validation-errors">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+            @if (ViewBag.InputValues != null)
+            {
+                <p>Ingevoerde UserId: @ViewBag.InputValues.UserId</p>
+                <p>Ingevoerde ForumId: @ViewBag.InputValues.ForumId</p>
+                <p>Ingevoerde Content: @ViewBag.InputValues.Content</p>
+            }
+
+        }
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Forums" asp-action="Details" asp-route-id="@Model.ForumId">Go back to forum</a>
 </div>
 
 @section Scripts {

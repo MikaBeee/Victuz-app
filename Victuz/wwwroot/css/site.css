@@ -327,7 +327,6 @@ select{
     .custom-btn:hover {
         box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5), -4px -4px 6px 0 rgba(116, 125, 136, .5), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
     }
-}
 
 .center-container-act {
     display: flex;
@@ -400,3 +399,9 @@ select{
     .submit-act:hover {
         background-color: #2d3748; 
     }
+
+.new-post-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
