@@ -63,10 +63,13 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Create
-        public IActionResult Create()
+        public IActionResult Create(int Id)
         {
-            ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password");
+
+            var registration = new GatheringRegistration
+            {
+                GatheringId = Id
+            };
             return View();
         }
 
@@ -75,7 +78,7 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,GatheringId,RegistrationDate")] GatheringRegistration gatheringRegistration)
+        public async Task<IActionResult> Create([Bind("UserId,RegistrationDate")] int Id, GatheringRegistration gatheringRegistration)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +86,7 @@ namespace Victuz.Controllers.DataController
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle", gatheringRegistration.GatheringId);
+            
             ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password", gatheringRegistration.UserId);
             return View(gatheringRegistration);
         }
