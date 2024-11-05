@@ -10,9 +10,10 @@ namespace Victuz.Controllers.HTMLController
         private readonly ILogger<HomeController> _logger;
         private readonly VictuzDB _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, VictuzDB context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()

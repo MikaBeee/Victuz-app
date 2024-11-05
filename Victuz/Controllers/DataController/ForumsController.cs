@@ -44,18 +44,11 @@ namespace Victuz.Controllers.DataController
             return View(forum);
         }
 
-        public async Task<List<ForumVM>> AllForums()
+        public async Task<IActionResult> AllForums()
         {
-            var victuzDB = _context.forum
-                .Select(f => new ForumVM
-                {
-                    ForumId = f.ForumId,
-                    Title = f.Title,
-                    Description = f.Description
-                })
-                .ToListAsync();
-
-            return await victuzDB;
+            var victuzDB = _context.forum;
+                
+            return View(await victuzDB.ToListAsync());
         }
 
         // GET: Forums/Create
