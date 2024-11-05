@@ -123,6 +123,13 @@ body {
     font-size: 18px;
 }
 
+.forum-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
 .new-discussion-button {
     background-color: #6C8A8D;
     color: #fff;
@@ -153,6 +160,15 @@ body {
     font-size: 18px;
     flex: 0 0 calc(25% - 15px);
     box-sizing: border-box;
+}
+
+.forum-title{
+    color: #000;
+    margin: 0;
+}
+
+.forum-desc{
+    color: #000;
 }
 
 .login-body {
@@ -276,4 +292,38 @@ select{
     font-size: 1rem;
     border-radius: 0.25rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    float: right;
 }
+
+.custom-btn {
+    width: 170px;
+    height: 40px;
+    color: #000;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: serif;
+    font-weight: 400;
+    font-size: 1rem;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+.custom-btn {
+    background: rgb(96,9,240);
+    background: linear-gradient(0deg, rgba(212,176,126,1) 0%, rgba(212,176,126,1) 100%);
+    border: none;
+}
+
+    .custom-btn:before {
+        height: 0%;
+        width: 2px;
+    }
+
+    .custom-btn:hover {
+        box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5), -4px -4px 6px 0 rgba(116, 125, 136, .5), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+    }
