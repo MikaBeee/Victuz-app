@@ -434,3 +434,7 @@ select{
         width: 100%;
         left: 0;
     }
+
+tr:hover {
+    background-color: #D4B07E;
+}
