@@ -46,4 +46,17 @@
             }
         </div>
     </section>
+
+    <script>
+        // Voeg muiswielondersteuning toe voor horizontaal scrollen in de secties
+        document.querySelectorAll('.activities-container, .forum-container').forEach(container => {
+            container.addEventListener('wheel', function(event) {
+                // Controleer of de Shift-toets is ingedrukt om alleen horizontaal scrollen toe te passen zonder verticaal scrollen
+                if (event.deltaY !== 0) {
+                    event.preventDefault();
+                    container.scrollLeft += event.deltaY;
+                }
+            });
+        });
+    </script>
 </body>
