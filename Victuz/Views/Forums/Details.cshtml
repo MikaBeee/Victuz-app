@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="forum-item">
+<div class="forum-detail-item">
     <h3 class="forum-title">@Html.DisplayFor(model => model.Title)</h3>
     <p class="forum-desc">@Html.DisplayFor(model => model.Description)</p>
 </div>
@@ -12,12 +12,14 @@
 
 <div>
     <div class="new-post-btn">
-        <h4>Posts</h4>
         <form asp-controller="Posts" asp-action="Create" asp-route-id="@Model.ForumId" method="get">
-            <input type="hidden" name="ForumId" value="@Model.ForumId" />
-            <button class="custom-btn button-creme">
-                Nieuwe post
-            </button>
+            <h4>
+                Posts
+                <input type="hidden" name="ForumId" value="@Model.ForumId" />
+                <button class="custom-btn button-creme" style="margin-left: auto;">
+                    Nieuwe post
+                </button>
+            </h4>
         </form>
     </div>
     <hr />
@@ -25,7 +27,7 @@
     {
         @foreach(var post in Model.Posts)
         {
-            <div class="forum-item">
+            <div class="forum-detail-item">
                 <p class="forum-title">by @post.User.UserName</p>
                 <p class="forum-title">on @post.PostedDate.ToString("g")</p>
                 <hr style="color: #000"/>

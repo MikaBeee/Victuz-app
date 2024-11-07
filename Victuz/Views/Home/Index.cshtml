@@ -19,7 +19,7 @@
             {
                 <form asp-controller="Gatherings" asp-action="Details" asp-route-id="@activity.GatheringId">
                     <button class="homepage-btn">
-                        <div class="forum-post">
+                        <div class="gathering-post">
                             <img src="@(activity.Photopath != null ? Url.Content(activity.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
                             class="homepage-image"/>
                             @activity.GatheringTitle
@@ -38,8 +38,9 @@
             {
                 <form asp-controller="Forums" asp-action="Details" asp-route-id="@forum.ForumId">
                     <button class="homepage-btn">
-                        <div class="forum-post">
-                            @forum.Title
+                        <div class="forum-post-title">
+                            <h4>@forum.Title</h4>
+                            <p class="forum-post-desc">@forum.Description</p>
                         </div>
                     </button>
                 </form>

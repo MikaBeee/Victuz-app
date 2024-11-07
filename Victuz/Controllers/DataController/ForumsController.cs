@@ -71,7 +71,7 @@ namespace Victuz.Controllers.DataController
             {
                 _context.Add(forum);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AllForums");
             }
             return View(forum);
         }
