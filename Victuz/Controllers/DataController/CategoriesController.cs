@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Victuz.Models.Viewmodels;
 
 namespace Victuz.Controllers.DataController
 {
+    [Authorize(Roles = "admin")]
     public class CategoriesController : Controller
     {
         private readonly VictuzDB _context;
@@ -21,6 +23,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Categories
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.categorie.ToListAsync());

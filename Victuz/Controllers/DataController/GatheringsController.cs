@@ -10,6 +10,7 @@ using Victuz.Data;
 using Victuz.Migrations;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Victuz.Controllers.DataController
 {
@@ -23,6 +24,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gatherings      //View specific to the administrator
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var victuzDB = _context.gathering
@@ -61,6 +63,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gatherings/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.categorie, "CatId", "CatName");
@@ -71,6 +74,7 @@ namespace Victuz.Controllers.DataController
         // POST: Gatherings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering, IFormFile Photo)
@@ -114,6 +118,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gatherings/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -138,6 +143,7 @@ namespace Victuz.Controllers.DataController
         // POST: Gatherings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("GatheringId,GatheringTitle,GatheringDescription,MaxParticipants,Date,LocationId,CategoryId")] Gathering gathering, IFormFile? Photo)
@@ -216,6 +222,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Gatherings/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -236,6 +243,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: Gatherings/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

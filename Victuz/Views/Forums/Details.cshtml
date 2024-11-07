@@ -12,15 +12,29 @@
 
 <div>
     <div class="new-post-btn">
-        <form asp-controller="Posts" asp-action="Create" asp-route-id="@Model.ForumId" method="get">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-controller="Posts" asp-action="Create" asp-route-id="@Model.ForumId" method="get">
+                <h4>
+                    Posts
+                    <input type="hidden" name="ForumId" value="@Model.ForumId" />
+                    <button class="custom-btn button-creme" style="margin-left: auto;">
+                        Nieuwe post
+                    </button>
+                </h4>
+            </form>
+        }
+        else
+        {
+        <form asp-controller="Users" asp-action="Login">
             <h4>
                 Posts
-                <input type="hidden" name="ForumId" value="@Model.ForumId" />
                 <button class="custom-btn button-creme" style="margin-left: auto;">
                     Nieuwe post
                 </button>
             </h4>
         </form>
+        }
     </div>
     <hr />
     @if(Model.Posts != null && Model.Posts.Any())

@@ -1,0 +1,44 @@
+﻿@model Victuz.Models.Viewmodels.RegisterVM
+
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Victuz</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="login-body">
+        <div class="login-container">
+            <h1>Aanmelden</h1>
+            <form asp-action="AccountReg" method="post" class="login-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="login-form-group">
+                    <label asp-for="UserName">Gebruikersnaam</label>
+                    <input asp-for="UserName" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="login-form-group">
+                    <label asp-for="Password">Wachtwoord</label>
+                    <input asp-for="Password" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="login-form-group">
+                    <label asp-for="ConfirmPassword">Bevestig wachtwoord</label>
+                    <input asp-for="ConfirmPassword" type="password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="login-form-group">
+                    <label asp-for="RoleId" class="control-label">Rol</label>
+                    <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
+                <button type="submit" class="custom-btn">Aanmelden</button>
+            </form>
+        </div>
+    </div>
+</body>

@@ -3,18 +3,26 @@ using System.Diagnostics;
 using Victuz.Models;
 using Victuz.Data;
 using Victuz.Models.Businesslayer;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Victuz.Models.Viewmodels;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Victuz.Controllers.HTMLController
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         private readonly VictuzDB _context;
 
         public HomeController(ILogger<HomeController> logger, VictuzDB context)
         {
             _logger = logger;
             _context = context;
+            
         }
 
         public IActionResult Index()
@@ -44,15 +52,8 @@ namespace Victuz.Controllers.HTMLController
             return View(forums);
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
 
-        public IActionResult AccountReg()
-        {
-            return View();
-        }
+
 
         public IActionResult Dashboard()
         {
@@ -62,7 +63,28 @@ namespace Victuz.Controllers.HTMLController
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            var statusCode = HttpContext.Response.StatusCode;
+            string statusDescription = "An error occurred.";
+
+            if (statusCode == 404)
+            {
+                return new ObjectResult(new { message = "Page not found" })
+                {
+                    StatusCode = statusCode
+                };
+            }
+
+            // Default error view with status code
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                StatusCode = statusCode,  // Pass status code to view
+                StatusDescription = statusDescription // You can pass the description if needed in the view
+            });
+
+
+            
         }
     }
 }

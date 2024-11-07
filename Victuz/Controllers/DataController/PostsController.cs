@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using Victuz.Models.Viewmodels;
 
 namespace Victuz.Controllers.DataController
 {
+    
     public class PostsController : Controller
     {
         private readonly VictuzDB _context;
@@ -23,6 +25,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Posts
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var victuzDB = _context.post.Include(p => p.Forum).Include(p => p.User);
@@ -68,7 +71,7 @@ namespace Victuz.Controllers.DataController
 
             return await victuzDB;
         }
-
+        [Authorize]
         // GET: Posts/Create
         public IActionResult Create(int forumid)
         {
@@ -87,7 +90,7 @@ namespace Victuz.Controllers.DataController
             post.PostedDate = DateTime.Now;
 
             if (ModelState.IsValid)
-            {
+            { 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Forums", new { id = post.ForumId });
