@@ -16,6 +16,7 @@ using Victuz.Models.Viewmodels;
 
 namespace Victuz.Controllers.DataController
 {
+
     public class UsersController : Controller
     {
         private readonly VictuzDB _context;

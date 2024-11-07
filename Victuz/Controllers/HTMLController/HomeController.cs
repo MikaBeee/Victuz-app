@@ -6,6 +6,8 @@ using Victuz.Models.Businesslayer;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Victuz.Models.Viewmodels;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Victuz.Controllers.HTMLController
@@ -61,7 +63,28 @@ namespace Victuz.Controllers.HTMLController
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            var statusCode = HttpContext.Response.StatusCode;
+            string statusDescription = "An error occurred.";
+
+            if (statusCode == 404)
+            {
+                return new ObjectResult(new { message = "Page not found" })
+                {
+                    StatusCode = statusCode
+                };
+            }
+
+            // Default error view with status code
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                StatusCode = statusCode,  // Pass status code to view
+                StatusDescription = statusDescription // You can pass the description if needed in the view
+            });
+
+
+            
         }
     }
 }

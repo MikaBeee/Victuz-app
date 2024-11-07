@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var victuzDB = _context.gatheringRegistration.Include(g => g.Gathering).Include(g => g.User);
@@ -28,6 +30,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? userid, int? gatheringid)
         {
             if (userid == null || gatheringid == null)
@@ -63,6 +66,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Create
+        [Authorize]
         public IActionResult Create(int Id)
         {
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
@@ -77,6 +81,7 @@ namespace Victuz.Controllers.DataController
         // POST: GatheringRegistrations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,RegistrationDate")] int Id, GatheringRegistration gatheringRegistration)
@@ -95,6 +100,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? userid, int? gatheringid)
         {
             if (userid == null || gatheringid == null)
@@ -115,6 +121,7 @@ namespace Victuz.Controllers.DataController
         // POST: GatheringRegistrations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserId,GatheringId,RegistrationDate")] GatheringRegistration gatheringRegistration)
@@ -150,6 +157,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? userid, int? gatheringid)
         {
             if (userid == null || gatheringid == null)
@@ -170,6 +178,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: GatheringRegistrations/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
