@@ -32,9 +32,8 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item font">
-                                <form class="nav-link text-white" asp-controller="Users" asp-action="Logout" method="post" style="display: inline">
-                                    <!-- Ensures the form is inline -->
-                                    <button type="submit" class="btn text-white">
+                                <form asp-controller="Users" asp-action="Logout" method="post" style="display: inline;">
+                                    <button type="submit" class="nav-link text-white bg-transparent border-0" onclick="return confirm('Are you sure you want to logout?');">
                                         Logout
                                     </button>
                                 </form>
