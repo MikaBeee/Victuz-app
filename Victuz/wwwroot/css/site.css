@@ -329,6 +329,38 @@ select{
         box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5), -4px -4px 6px 0 rgba(116, 125, 136, .5), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
     }
 
+.custom-btn-register {
+    line-height: 1.5;
+    color: #000;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: serif;
+    font-weight: 400;
+    font-size: 1rem;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+.custom-btn-register {
+    background: rgb(96,9,240);
+    background: linear-gradient(0deg, rgba(0,78,92,1) 0%, rgba(0,78,92,1) 100%);
+    border: none;
+}
+
+    .custom-btn-register:before {
+        height: 0%;
+        width: 2px;
+    }
+
+    .custom-btn-register:hover {
+        box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5), -4px -4px 6px 0 rgba(116, 125, 136, .5), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+    }
+
 .center-container-act {
     display: auto;
     justify-content: center;
@@ -463,3 +495,4 @@ tr:hover {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
