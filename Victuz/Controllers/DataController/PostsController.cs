@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -75,8 +76,11 @@ namespace Victuz.Controllers.DataController
         // GET: Posts/Create
         public IActionResult Create(int forumid)
         {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // This is where the UserId is usually stored
+
+            // Set the UserId value into ViewData to be used in the view
+            ViewData["UserId"] = UserId;
             ViewData["ForumId"] = new SelectList(_context.forum, "ForumId", "Title");
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "UserName");
             return View(new Post { ForumId = forumid});
         }
 

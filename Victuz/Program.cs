@@ -18,7 +18,7 @@ internal class Program
             {
                 options.LoginPath = "/Users/Login";
                 options.LogoutPath = "/Users/Logout";
-                options.AccessDeniedPath = "/Home/Error";
+                options.AccessDeniedPath = "/Home/Login";
 
 
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
@@ -31,17 +31,16 @@ internal class Program
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
+            app.UseStatusCodePagesWithReExecute("/Home/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
         app.UseAuthentication();
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
-
+        
         app.UseAuthorization();
 
         app.MapControllerRoute(

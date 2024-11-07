@@ -214,7 +214,9 @@ namespace Victuz.Controllers.DataController
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, model.UserName),
+                            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                             new Claim(ClaimTypes.Role, roleName ?? ""),
+                            
                             
 
                         };
