@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Victuz.Data;
 
@@ -11,9 +12,11 @@ using Victuz.Data;
 namespace Victuz.Migrations
 {
     [DbContext(typeof(VictuzDB))]
-    partial class VictuzDBModelSnapshot : ModelSnapshot
+    [Migration("20241106150855_DataInsertIntoDB")]
+    partial class DataInsertIntoDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,17 +44,17 @@ namespace Victuz.Migrations
                     b.HasData(
                         new
                         {
-                            CatId = 1,
+                            CatId = -1,
                             CatName = "feest"
                         },
                         new
                         {
-                            CatId = 2,
+                            CatId = -2,
                             CatName = "bijeenkomst"
                         },
                         new
                         {
-                            CatId = 3,
+                            CatId = -3,
                             CatName = "event"
                         });
                 });
@@ -199,12 +202,12 @@ namespace Victuz.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = 1,
+                            RoleId = -1,
                             RoleName = "admin"
                         },
                         new
                         {
-                            RoleId = 2,
+                            RoleId = -2,
                             RoleName = "user"
                         });
                 });
@@ -237,30 +240,30 @@ namespace Victuz.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
+                            UserId = -1,
                             Password = "123",
-                            RoleId = 1,
+                            RoleId = -1,
                             UserName = "admin"
                         },
                         new
                         {
-                            UserId = 2,
+                            UserId = -2,
                             Password = "123",
-                            RoleId = 2,
+                            RoleId = -2,
                             UserName = "mika"
                         },
                         new
                         {
-                            UserId = 3,
+                            UserId = -3,
                             Password = "123",
-                            RoleId = 2,
+                            RoleId = -2,
                             UserName = "sven"
                         },
                         new
                         {
-                            UserId = 4,
+                            UserId = -4,
                             Password = "123",
-                            RoleId = 2,
+                            RoleId = -2,
                             UserName = "charlotte"
                         });
                 });

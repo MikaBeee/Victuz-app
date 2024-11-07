@@ -12,8 +12,8 @@ using Victuz.Data;
 namespace Victuz.Migrations
 {
     [DbContext(typeof(VictuzDB))]
-    [Migration("20241029105422_AddRelationsAndTablesToDB")]
-    partial class AddRelationsAndTablesToDB
+    [Migration("20241105140123_AddedDataToDB")]
+    partial class AddedDataToDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,23 @@ namespace Victuz.Migrations
                     b.HasKey("CatId");
 
                     b.ToTable("categorie");
+
+                    b.HasData(
+                        new
+                        {
+                            CatId = 1,
+                            CatName = "feest"
+                        },
+                        new
+                        {
+                            CatId = 2,
+                            CatName = "bijeenkomst"
+                        },
+                        new
+                        {
+                            CatId = 3,
+                            CatName = "event"
+                        });
                 });
 
             modelBuilder.Entity("Victuz.Models.Businesslayer.Forum", b =>
@@ -89,6 +106,9 @@ namespace Victuz.Migrations
                     b.Property<int>("MaxParticipants")
                         .HasColumnType("int");
 
+                    b.Property<string>("Photopath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("GatheringId");
 
                     b.HasIndex("CategoryId");
@@ -113,7 +133,7 @@ namespace Victuz.Migrations
 
                     b.HasIndex("GatheringId");
 
-                    b.ToTable("activitieregistration");
+                    b.ToTable("gatheringRegistration");
                 });
 
             modelBuilder.Entity("Victuz.Models.Businesslayer.Location", b =>
@@ -178,6 +198,18 @@ namespace Victuz.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("role");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "user"
+                        });
                 });
 
             modelBuilder.Entity("Victuz.Models.Businesslayer.User", b =>
@@ -204,6 +236,36 @@ namespace Victuz.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Password = "123",
+                            RoleId = 1,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Password = "123",
+                            RoleId = 2,
+                            UserName = "mika"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Password = "123",
+                            RoleId = 2,
+                            UserName = "sven"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Password = "123",
+                            RoleId = 2,
+                            UserName = "charlotte"
+                        });
                 });
 
             modelBuilder.Entity("Victuz.Models.Businesslayer.Gathering", b =>

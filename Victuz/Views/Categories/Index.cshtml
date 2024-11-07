@@ -7,8 +7,11 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button class="custom-btn button-creme">
+        <a class="no-underline text-black fw-bold" asp-controller="Categories" asp-action="Create">Aanmaken</a>
+    </button>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -32,4 +35,7 @@
         </tr>
 }
     </tbody>
+
 </table>
+
+<a href="/Home/Dashboard">Terug naar dashboard</a>

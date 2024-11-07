@@ -61,6 +61,65 @@ namespace Victuz.Data
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<Role>().HasData(
+                new Role
+                {
+                    RoleId = 1,
+                    RoleName = "admin"
+                },
+                new Role
+                {
+                    RoleId = 2,
+                    RoleName = "user"
+                });
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    CatId = 1,
+                    CatName = "feest"
+                },
+                new Category
+                {
+                    CatId = 2,
+                    CatName = "bijeenkomst"
+                },
+                new Category
+                {
+                    CatId = 3,
+                    CatName = "event"
+                });
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    UserId = 1,
+                    UserName = "admin",
+                    Password = "123",
+                    RoleId = 1
+                },
+                new User
+                {
+                    UserId = 2,
+                    UserName = "mika",
+                    Password = "123",
+                    RoleId = 2
+                },
+                new User
+                {
+                    UserId = 3,
+                    UserName = "sven",
+                    Password = "123",
+                    RoleId = 2
+                },
+                new User
+                {
+                    UserId = 4,
+                    UserName = "charlotte",
+                    Password = "123",
+                    RoleId = 2
+                });
         }
     }
 }

@@ -35,7 +35,10 @@ namespace Victuz.Controllers.DataController
             }
 
             var forum = await _context.forum
+                .Include(f => f.Posts)
+                    .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync(m => m.ForumId == id);
+
             if (forum == null)
             {
                 return NotFound();
