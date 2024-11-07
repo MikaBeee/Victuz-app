@@ -4,19 +4,13 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Afmelden voor activiteit?</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>Weet je zeker dat je wil afmelden?</h4>
 <div>
-    <h4>GatheringRegistration</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Password)
-        </dd>
+        <p>Activiteit</p>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Gathering)
         </dt>
@@ -29,12 +23,19 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RegistrationDate)
         </dd>
+        
     </dl>
+
+   
     
     <form asp-action="Delete">
+      
         <input type="hidden" asp-for="UserId" />
         <input type="hidden" asp-for="GatheringId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+      
+        <input type="submit" class="no-underline text-black fw-bold custom-btn button-creme" value="Afmelden" style="right: 87%;" />
+        <a class="no-underline text-black fw-bold custom-btn button-creme" style="right: 58%;" asp-action="Home">Terug naar home</a>
+        
+        
     </form>
 </div>
