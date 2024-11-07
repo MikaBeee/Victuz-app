@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ namespace Victuz.Controllers.DataController
     {
         private readonly VictuzDB _context;
         private readonly PasswordHasher<User> _passwordHasher;
-        public UsersController(VictuzDB context)
+
+        public UsersController(VictuzDB context, ILogger<UsersController> logger)
         {
 
             _context = context;
@@ -192,22 +194,31 @@ namespace Victuz.Controllers.DataController
         {
             if (ModelState.IsValid)
             {
-                var user = await _context.users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
+                var user = await _context.users
+                    .Include(u => u.Role)
+                    .SingleOrDefaultAsync(u => u.UserName == model.UserName);
 
                 if (user != null)
                 {
 
-
+                  
 
                     var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
+                   
                     if (result == PasswordVerificationResult.Success)
                     {
+                        var roleName = user.Role?.RoleName;
+
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, model.UserName),
-                            new Claim(ClaimTypes.Role, user.RoleId == 1 ? "Admin" : "User")
+                            new Claim(ClaimTypes.Role, roleName ?? ""),
+                            
+
                         };
+
+
 
                         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
 
