@@ -13,8 +13,9 @@
             <div>
                 <span class="title-act">Aanmelden voor activiteit</span>
                 <br />
-                <label for="UserId" class="label-act">Naam</label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <label for="UserId" class="label-act">Naam (voor en achternaam)</label>
+                <input asp-for="UserId" class="form-control" placeholder="Vul hier je naam in" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="GatheringId" class="label-act">Activiteit</label>

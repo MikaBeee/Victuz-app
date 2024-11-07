@@ -28,9 +28,9 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? userid, int? gatheringid)
         {
-            if (id == null)
+            if (userid == null || gatheringid == null)
             {
                 return NotFound();
             }
@@ -38,7 +38,7 @@ namespace Victuz.Controllers.DataController
             var gatheringRegistration = await _context.gatheringRegistration
                 .Include(g => g.Gathering)
                 .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.UserId == userid && m.GatheringId == gatheringid);
             if (gatheringRegistration == null)
             {
                 return NotFound();
@@ -65,11 +65,12 @@ namespace Victuz.Controllers.DataController
         // GET: GatheringRegistrations/Create
         public IActionResult Create(int Id)
         {
-
+            ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
             var registration = new GatheringRegistration
             {
                 GatheringId = Id
             };
+
             return View();
         }
 
@@ -82,8 +83,10 @@ namespace Victuz.Controllers.DataController
         {
             if (ModelState.IsValid)
             {
-                _context.Add(gatheringRegistration);
-                await _context.SaveChangesAsync();
+                _context
+                    .Add(gatheringRegistration);
+                await _context
+                    .SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -92,14 +95,14 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? userid, int? gatheringid)
         {
-            if (id == null)
+            if (userid == null || gatheringid == null)
             {
                 return NotFound();
             }
 
-            var gatheringRegistration = await _context.gatheringRegistration.FindAsync(id);
+            var gatheringRegistration = await _context.gatheringRegistration.FirstOrDefaultAsync(m => m.UserId == userid && m.GatheringId == gatheringid); ;
             if (gatheringRegistration == null)
             {
                 return NotFound();
@@ -147,9 +150,9 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? userid, int? gatheringid)
         {
-            if (id == null)
+            if (userid == null || gatheringid == null)
             {
                 return NotFound();
             }
@@ -157,7 +160,7 @@ namespace Victuz.Controllers.DataController
             var gatheringRegistration = await _context.gatheringRegistration
                 .Include(g => g.Gathering)
                 .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.UserId == userid && m.GatheringId == gatheringid);
             if (gatheringRegistration == null)
             {
                 return NotFound();
