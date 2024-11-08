@@ -246,7 +246,13 @@ namespace Victuz.Controllers.DataController
 
         public IActionResult AccountReg()
         {
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
+            var roles = _context.role
+                .Where(r => r.RoleName != "Admin") // of filter op RoleId: r.RoleId != adminRoleId
+                .Select(r => new { r.RoleId, r.RoleName })
+                .ToList();
+
+            ViewBag.RoleId = new SelectList(roles, "RoleId", "RoleName");
+            
             return View();
         }
 
