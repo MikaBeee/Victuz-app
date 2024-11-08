@@ -212,6 +212,14 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
+            var gathering = await _context.gathering
+                .FirstOrDefaultAsync(g => g.GatheringId == id);
+
+            if (gathering == null)
+            {
+                return NotFound();
+            }
+
             var gatheringRegistration = await _context.gatheringRegistration
                 .Include(g => g.Gathering)
                 .Include(g => g.User)
@@ -224,7 +232,8 @@ namespace Victuz.Controllers.DataController
                     Gathering = g.Gathering,
                     User = g.User
                 }).ToList();
-            
+
+            ViewData["GatheringTitle"] = gathering.GatheringTitle;
 
             return View(gatheringregvm);
         }
