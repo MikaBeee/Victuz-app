@@ -167,7 +167,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Delete/5
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<IActionResult> Delete(int? userid, int? gatheringid)
         {
             if (userid == null || gatheringid == null)
@@ -188,19 +188,20 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: GatheringRegistrations/Delete/5
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int userid, int? gatheringid)
         {
-            var gatheringRegistration = await _context.gatheringRegistration.FindAsync(id);
+            var gatheringRegistration = await _context.gatheringRegistration
+                .FindAsync(userid, gatheringid); // Pass both key values
             if (gatheringRegistration != null)
             {
                 _context.gatheringRegistration.Remove(gatheringRegistration);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
         //Get: All participants of id
         [Authorize(Roles = "admin")]

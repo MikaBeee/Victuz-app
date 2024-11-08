@@ -1,4 +1,5 @@
-﻿@model Victuz.Models.Businesslayer.Gathering
+﻿@using System.Security.Claims
+@model Victuz.Models.Businesslayer.Gathering
 
 <!DOCTYPE html>
 
@@ -25,10 +26,26 @@
 
 
 
-                            <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px; ">
-                                <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600;">
-                                    Reserveren
-                                </a>
+                            <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px;">
+
+                                @if (ViewData["IsUserRegistered"] != null && (bool)ViewData["IsUserRegistered"])
+                                {
+                                    <form asp-controller="GatheringRegistrations" asp-action="Delete"
+                                          asp-route-userid="@User.FindFirstValue(ClaimTypes.NameIdentifier)"
+                                          asp-route-gatheringid="@Model.GatheringId"
+                                          method="post" style="display: inline-block; width: 100%;">
+
+                                        <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;" onclick="return confirm('Weet u het zeker dat u zich wilt afmelden?');">
+                                            Uitschrijven
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
+                                        Reserveren
+                                    </a>
+                                }
                             </dd>
                     </div>
                 </div>

@@ -45,11 +45,18 @@ namespace Victuz.Controllers.DataController
             var gathering = await _context.gathering
                 .Include(g => g.Category)
                 .Include(g => g.Location)
+                .Include(g => g.GatheringRegistrations)
                 .FirstOrDefaultAsync(m => m.GatheringId == id);
             if (gathering == null)
             {
                 return NotFound();
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming you're using Claims for logged-in user
+            var isUserRegistered = gathering.GatheringRegistrations
+                .Any(gr => gr.UserId.ToString() == userId); // Check if the user is registered for this gathering
+
+            // Pass the registration status to the view
+            ViewData["IsUserRegistered"] = isUserRegistered;
 
             return View(gathering);
         }
