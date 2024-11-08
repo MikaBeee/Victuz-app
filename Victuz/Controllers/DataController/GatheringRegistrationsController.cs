@@ -62,7 +62,6 @@ namespace Victuz.Controllers.DataController
 
         // GET: GatheringRegistrations/Create
         [Authorize]
-        [HttpGet("GatheringRegistrations/Create/{Id:int}")]
         public IActionResult Create(int Id)
         {
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
