@@ -201,9 +201,6 @@ namespace Victuz.Controllers.DataController
 
                 if (user != null)
                 {
-
-                  
-
                     var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
                    
@@ -215,20 +212,21 @@ namespace Victuz.Controllers.DataController
                         {
                             new Claim(ClaimTypes.Name, model.UserName),
                             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                            new Claim(ClaimTypes.Role, roleName ?? ""),
-                            
-                            
-
+                            new Claim(ClaimTypes.Role, roleName ?? "")
                         };
-
-
 
                         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
 
                         await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));
 
-                        return RedirectToAction("Index", "Home");
-
+                        if(roleName == "admin")
+                        {
+                            return RedirectToAction("Dashboard", "Home");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
@@ -286,7 +284,7 @@ namespace Victuz.Controllers.DataController
                     // Add user to the database
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
