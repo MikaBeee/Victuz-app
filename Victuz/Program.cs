@@ -18,7 +18,7 @@ internal class Program
             {
                 options.LoginPath = "/Users/Login";
                 options.LogoutPath = "/Users/Logout";
-                options.AccessDeniedPath = "/Home/Login";
+                options.AccessDeniedPath = "/Users/Login";
 
 
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);

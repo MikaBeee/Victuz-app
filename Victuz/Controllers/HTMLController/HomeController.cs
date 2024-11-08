@@ -8,6 +8,7 @@ using Victuz.Models.Viewmodels;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Victuz.Controllers.HTMLController
@@ -52,6 +53,7 @@ namespace Victuz.Controllers.HTMLController
             return View(forums);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Dashboard()
         {
             return View();

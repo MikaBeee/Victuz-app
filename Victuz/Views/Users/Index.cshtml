@@ -13,16 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                Naam
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
+                Rol
             </th>
             <th></th>
         </tr>
@@ -37,9 +34,6 @@
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Role.RoleName)
             </td>
             <td>
@@ -51,3 +45,4 @@
 }
     </tbody>
 </table>
+<a href="/Home/Dashboard">Terug naar dashboard</a>
