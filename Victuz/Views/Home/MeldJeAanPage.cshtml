@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "MeldJeAanPage";
+}
+
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+ 
+    <title>Word lid van Victuz!</title>
+    <style>
+        body {
+            font-family:sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        h1, h2 {
+            color: #6C8A8D;
+        }
+        ul {
+            list-style-type: disc;
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        .button {
+            display: inline-block;
+            background-color: #D4B07E;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #5848c2;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Word lid van Studievereniging Victuz!</h1>
+        <p>Jouw netwerk, jouw kansen, jouw studententijd!</p>
+    </header>
+
+    <main>
+        <h2>Waarom Victuz?</h2>
+        <p>Studievereniging Victuz is dé vereniging voor studenten die meer uit hun studie willen halen. Door lid te worden van Victuz kom je in contact met medestudenten, breid je je netwerk uit, en profiteer je van exclusieve voordelen. Dit zijn enkele redenen om je aan te melden:</p>
+
+        <h2>Voordelen van lidmaatschap</h2>
+        <ul>
+            <li><strong>Exclusieve kortingen</strong> bij studiemateriaal en vakliteratuur: Bespaar direct op boeken en hulpmiddelen die je nodig hebt tijdens je studie!</li>
+            <li><strong>Netwerkopbouw</strong> met medestudenten en professionals: Ontmoet mensen uit jouw vakgebied en leg contacten die je toekomstige carrière een boost kunnen geven.</li>
+            <li><strong>Toegang tot evenementen</strong> zoals workshops, lezingen en netwerkborrels. Dit zijn geweldige gelegenheden om meer kennis op te doen en in contact te komen met inspirerende professionals.</li>
+            <li><strong>Speciale ledenactiviteiten</strong> zoals weekenduitjes, borrels en sportevenementen. Zo beleef je een onvergetelijke studententijd en maak je vrienden voor het leven.</li>
+        </ul>
+
+        <h2>Schrijf je nu in!</h2>
+        <p>Mis deze kans niet om je studententijd nóg leuker en zinvoller te maken. Bij Victuz ben je verzekerd van een community die je inspireert, ondersteunt en helpt om het beste uit jezelf te halen.</p>
+
+        <a asp-controller="Users" asp-action="AccountReg" class="button">Meld je vandaag nog aan!</a>
+    </main>
+
+</body>
+</html>
+
