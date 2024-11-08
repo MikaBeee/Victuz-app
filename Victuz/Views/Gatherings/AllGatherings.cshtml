@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Victuz.Models.Businesslayer.Gathering>
 
+@{
+    ViewData["Title"] = "Gatherings";
+}
+
 <!DOCTYPE html>
 
 <html>
@@ -15,18 +19,17 @@
     {
         <div class="fw-bold" style="font-size: xx-large">
             Activiteiten
-            <button class="custom-btn button-creme">
-                <a class="no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="MyEvents">Mijn activiteiten</a>
-            </button>
+
+                <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="MyEvents">Mijn activiteiten</a>
+
         </div>
     }
     else
     {
         <div class="fw-bold" style="font-size: xx-large">
             Activiteiten
-            <button class="custom-btn button-creme">
-                <a class="no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Mijn activiteiten</a>
-            </button>
+
+                    <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Mijn activiteiten</a>
         </div>
     }
 

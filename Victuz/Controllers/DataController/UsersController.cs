@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using Victuz.Data;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
@@ -30,6 +31,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Users
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var victuzDB = _context.users.Include(u => u.Role);
@@ -37,6 +39,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Users/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -54,7 +57,7 @@ namespace Victuz.Controllers.DataController
 
             return View(user);
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<List<UserVM>> AllUsers()
         {
             var victuzDB = _context.users
@@ -73,30 +76,60 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Users/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
+            var roles = _context.role // of filter op RoleId: r.RoleId != adminRoleId
+                .Select(r => new { r.RoleId, r.RoleName })
+                .ToList();
+
+            ViewBag.RoleId = new SelectList(roles, "RoleId", "RoleName");
+
             return View();
         }
 
         // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,UserName,Password,RoleId")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,UserName,Password,ConfirmPassword, RoleId")] RegisterVM registerVM)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Check if the username already exists
+                var existingUser = await _context.users
+                    .FirstOrDefaultAsync(u => u.UserName == registerVM.UserName);
+
+                if (existingUser != null)
+                {
+                    // Add a model state error if the username is taken
+                    ModelState.AddModelError("UserName", "Deze gebruikersnaam bestaat al.");
+                }
+                else
+                {
+                    // Create a new User object from the view model
+                    var user = new User
+                    {
+                        UserName = registerVM.UserName,
+                        Password = _passwordHasher.HashPassword(new User(), registerVM.Password), // Hash the password
+                        RoleId = registerVM.RoleId
+                    };
+
+                    // Add user to the database
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View(user);
+            // If we got this far, something failed; redisplay the form with the same model
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", registerVM.RoleId);
+            return View(registerVM); // Pass the RegisterVM back to the view
         }
 
         // GET: Users/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -104,11 +137,14 @@ namespace Victuz.Controllers.DataController
                 return NotFound();
             }
 
-            var user = await _context.users.FindAsync(id);
+            var user = await _context.users
+                .FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
+            user.Password = string.Empty;
+
             ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
             return View(user);
         }
@@ -116,40 +152,77 @@ namespace Victuz.Controllers.DataController
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,Password,RoleId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,Password,RoleId")] User userVM)
         {
-            if (id != user.UserId)
+            if (id != userVM.UserId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                // Check if another user already has the same username
+                var existingUser = await _context.users
+                    .FirstOrDefaultAsync(u => u.UserName == userVM.UserName && u.UserId != userVM.UserId);
+
+                if (existingUser != null)
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    // Add a model state error if the username is taken by another user
+                    ModelState.AddModelError("UserName", "Deze gebruikersnaam bestaat al.");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!UserExists(user.UserId))
+                    try
                     {
-                        return NotFound();
+                        // Retrieve the user to edit from the database
+                        var user = await _context.users.FindAsync(userVM.UserId);
+                        if (user == null)
+                        {
+                            return NotFound();
+                        }
+
+                        // Update the user's information
+                        user.UserName = userVM.UserName;
+
+                        // Only update the password if it was modified (assuming empty means no change)
+                        if (!string.IsNullOrEmpty(userVM.Password))
+                        {
+                            user.Password = _passwordHasher.HashPassword(user, userVM.Password);
+                        }
+
+                        user.RoleId = userVM.RoleId;
+
+                        // Mark the user entity as modified
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction("Index", "Home");
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!_context.users.Any(u => u.UserId == userVM.UserId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", user.RoleId);
-            return View(user);
+
+            // If we got this far, something failed; redisplay the form with the same model
+            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName", userVM.RoleId);
+            return View(userVM); // Pass the model back to the view with any validation errors
         }
 
+
         // GET: Users/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -169,6 +242,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: Users/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -201,9 +275,6 @@ namespace Victuz.Controllers.DataController
 
                 if (user != null)
                 {
-
-                  
-
                     var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
                    
@@ -215,29 +286,30 @@ namespace Victuz.Controllers.DataController
                         {
                             new Claim(ClaimTypes.Name, model.UserName),
                             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                            new Claim(ClaimTypes.Role, roleName ?? ""),
-                            
-                            
-
+                            new Claim(ClaimTypes.Role, roleName ?? "")
                         };
-
-
 
                         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
 
                         await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));
 
-                        return RedirectToAction("Index", "Home");
-
+                        if(roleName == "admin")
+                        {
+                            return RedirectToAction("Dashboard", "Home");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        ModelState.AddModelError(string.Empty, "Naam of wachtwoord is incorrect.");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Naam of wachtwoord is incorrect.");
                 }
             }
             return View(model);
@@ -246,7 +318,13 @@ namespace Victuz.Controllers.DataController
 
         public IActionResult AccountReg()
         {
-            ViewData["RoleId"] = new SelectList(_context.role, "RoleId", "RoleName");
+            var roles = _context.role
+                .Where(r => r.RoleName != "Admin") // of filter op RoleId: r.RoleId != adminRoleId
+                .Select(r => new { r.RoleId, r.RoleName })
+                .ToList();
+
+            ViewBag.RoleId = new SelectList(roles, "RoleId", "RoleName");
+            
             return View();
         }
 
@@ -265,7 +343,7 @@ namespace Victuz.Controllers.DataController
                 if (existingUser != null)
                 {
                     // Add a model state error if the username is taken
-                    ModelState.AddModelError("UserName", "Username is already taken.");
+                    ModelState.AddModelError("UserName", "Deze gebruikersnaam bestaat al.");
                 }
                 else
                 {
@@ -280,7 +358,7 @@ namespace Victuz.Controllers.DataController
                     // Add user to the database
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Home");
                 }
             }
 

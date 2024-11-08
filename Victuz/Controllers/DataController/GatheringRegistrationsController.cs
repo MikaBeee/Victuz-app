@@ -44,7 +44,7 @@ namespace Victuz.Controllers.DataController
 
             return View(gatheringRegistration);
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<List<GatheringRegistrationVM>> AllGatheringRegistration()
         {
             var victuzDB = _context.gatheringRegistration
@@ -62,7 +62,6 @@ namespace Victuz.Controllers.DataController
 
         // GET: GatheringRegistrations/Create
         [Authorize]
-        [HttpGet("GatheringRegistrations/Create/{Id:int}")]
         public IActionResult Create(int Id)
         {
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
@@ -171,7 +170,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Delete/5
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<IActionResult> Delete(int? userid, int? gatheringid)
         {
             if (userid == null || gatheringid == null)
@@ -192,25 +191,34 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: GatheringRegistrations/Delete/5
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int userid, int? gatheringid)
         {
-            var gatheringRegistration = await _context.gatheringRegistration.FindAsync(id);
+            var gatheringRegistration = await _context.gatheringRegistration
+                .FindAsync(userid, gatheringid); // Pass both key values
             if (gatheringRegistration != null)
             {
                 _context.gatheringRegistration.Remove(gatheringRegistration);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
         //Get: All participants of id
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GatheringParticipants(int? id)
         {
             if (id == null)
+            {
+                return NotFound();
+            }
+
+            var gathering = await _context.gathering
+                .FirstOrDefaultAsync(g => g.GatheringId == id);
+
+            if (gathering == null)
             {
                 return NotFound();
             }
@@ -227,7 +235,8 @@ namespace Victuz.Controllers.DataController
                     Gathering = g.Gathering,
                     User = g.User
                 }).ToList();
-            
+
+            ViewData["GatheringTitle"] = gathering.GatheringTitle;
 
             return View(gatheringregvm);
         }

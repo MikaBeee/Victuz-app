@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Victuz.Models.Viewmodels.GatheringRegistrationVM>
 
+@{
+    ViewData["Title"] = "Registrations";
+}
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -7,38 +11,41 @@
 </head>
 <body>
     <p>
-
-            <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="Index">Terug</a>
-
+        <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="Index">Terug</a>
     </p>
-    <h1>@Html.DisplayFor(Model => Model.First().Gathering.GatheringTitle)</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Id deelnemer
-                </th>
-                <th>
-                    Gebruikersnaam
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <h1>@ViewData["GatheringTitle"]</h1>
+    @if(Model == null || !Model.Any())
+    {
+        <h5>aantal deelnemers: 0</h5>
+    }
+    else
+    {
+        <h5>aantal deelnemers: @Model.Count()</h5>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.User.UserId)
-                    </td>
                     <th>
-                        @Html.DisplayFor(Model => item.User.UserName)
+                        Id deelnemer
+                    </th>
+                    <th>
+                        Gebruikersnaam
                     </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-        
-        
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.UserId)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(Model => item.User.UserName)
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </body>
 </html>

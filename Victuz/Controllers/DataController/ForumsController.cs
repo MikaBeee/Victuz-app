@@ -57,6 +57,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Forums/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -65,6 +66,7 @@ namespace Victuz.Controllers.DataController
         // POST: Forums/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ForumId,Title,Description")] Forum forum)
@@ -79,6 +81,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Forums/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +100,7 @@ namespace Victuz.Controllers.DataController
         // POST: Forums/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ForumId,Title,Description")] Forum forum)
@@ -130,6 +134,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: Forums/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +153,7 @@ namespace Victuz.Controllers.DataController
         }
 
         // POST: Forums/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
