@@ -36,7 +36,10 @@ namespace Victuz.Controllers.HTMLController
 
             return View(model);
         }
-
+        public IActionResult MeldJeAanPage()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
