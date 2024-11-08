@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Create";
 }
+@{
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
 
 
 <hr />
@@ -25,6 +28,12 @@
                 <span asp-validation-for="RegistrationDate" class="text-danger"></span>
             </div>
             <br />
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <script type="text/javascript">
+                    alert('@errorMessage');
+                </script>
+            }
             <div class="form-group">
                 <input type="submit" value="Aanmelden" class="submit-act" />
             </div>

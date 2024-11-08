@@ -289,6 +289,8 @@ namespace Victuz.Controllers.DataController
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        //Get: Gatheringparticipants
+        [Authorize(Roles = "admin")]
 
         private bool GatheringExists(int id)
         {
