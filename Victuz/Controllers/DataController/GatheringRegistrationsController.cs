@@ -70,7 +70,8 @@ namespace Victuz.Controllers.DataController
 
             var registration = new GatheringRegistration
             {
-                GatheringId = Id
+                GatheringId = Id,
+                RegistrationDate = DateTime.Now
             };
 
             return View(registration);
@@ -98,7 +99,9 @@ namespace Victuz.Controllers.DataController
             }
 
             if (ModelState.IsValid)
-            {
+            {       
+
+                    
                 _context
                     .Add(gatheringRegistration);
                 await _context

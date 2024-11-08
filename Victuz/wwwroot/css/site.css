@@ -19,9 +19,27 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  font-family: serif;
+    background-image: url('..//images/victuz.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
+    margin-bottom: 60px;
+    font-family: serif;
 }
+
+    
+body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.88); /* Adjust transparency level */
+        z-index: -1; /* Keep it behind content */
+    }
 
 .bg-navbar {
     background-color: #0e616e;
@@ -556,5 +574,67 @@ tr:hover {
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.featured-activity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+    .featured-activity img {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+.featured-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Styles for the smaller, horizontally scrolling activities */
+.activities-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+.gathering-post {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homepage-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.homepage-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style scrollbar for activities container */
+.activities-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.activities-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.activities-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
 

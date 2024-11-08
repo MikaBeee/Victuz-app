@@ -29,7 +29,10 @@ namespace Victuz.Controllers.HTMLController
         {
             var model = new OrderViewModel
             {
-                gatherings = _context.gathering.ToList() ?? new List<Gathering>(),
+                gatherings = _context.gathering
+                .Include(g => g.Location)
+                .OrderBy(g => g.Date)
+                .ToList() ?? new List<Gathering>(),
                 forums = _context.forum.ToList() ?? new List<Forum>()
             };
 
