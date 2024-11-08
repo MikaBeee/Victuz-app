@@ -21,13 +21,7 @@ namespace Victuz.Controllers.DataController
             _context = context;
         }
 
-        // GET: GatheringRegistrations
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Index()
-        {
-            var victuzDB = _context.gatheringRegistration.Include(g => g.Gathering).Include(g => g.User);
-            return View(await victuzDB.ToListAsync());
-        }
+
 
         // GET: GatheringRegistrations/Details/5
         [Authorize(Roles = "admin")]
@@ -86,17 +80,27 @@ namespace Victuz.Controllers.DataController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,RegistrationDate")] int Id, GatheringRegistration gatheringRegistration)
         {
+            bool ticketExists = await _context.gatheringRegistration
+                    .AnyAsync(gr => gr.UserId == gatheringRegistration.UserId && gr.GatheringId == gatheringRegistration.GatheringId);
+
+            if (ticketExists)
+            {
+                TempData["ErrorMessage"] = "U heeft al een ticket voor deze activiteit";
+                return RedirectToAction("Create", new {gatheringRegistration.GatheringId});
+            }
+
             if (ModelState.IsValid)
             {
                 _context
                     .Add(gatheringRegistration);
                 await _context
                     .SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
+
             
             ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password", gatheringRegistration.UserId);
-            return View(gatheringRegistration);
+            return View();
         }
 
         // GET: GatheringRegistrations/Edit/5
@@ -192,6 +196,32 @@ namespace Victuz.Controllers.DataController
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        //Get: All participants of id
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GatheringParticipants(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var gatheringRegistration = await _context.gatheringRegistration
+                .Include(g => g.Gathering)
+                .Include(g => g.User)
+                .Where(g => g.GatheringId == id)
+                .ToListAsync();
+
+            var gatheringregvm = gatheringRegistration
+                .Select(g => new GatheringRegistrationVM
+                {
+                    Gathering = g.Gathering,
+                    User = g.User
+                }).ToList();
+            
+
+            return View(gatheringregvm);
+        }
+
 
         private bool GatheringRegistrationExists(int id)
         {

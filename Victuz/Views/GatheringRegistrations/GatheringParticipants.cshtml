@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Victuz.Models.Viewmodels.GatheringRegistrationVM>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Deelnemers</title>
+</head>
+<body>
+    <p>
+
+            <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="Index">Terug</a>
+
+    </p>
+    <h1>@Html.DisplayFor(Model => Model.First().Gathering.GatheringTitle)</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id deelnemer
+                </th>
+                <th>
+                    Gebruikersnaam
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserId)
+                    </td>
+                    <th>
+                        @Html.DisplayFor(Model => item.User.UserName)
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+        
+        
+</body>
+</html>
