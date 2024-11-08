@@ -17,7 +17,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between font">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -73,32 +73,33 @@
             @RenderBody()
         </main> 
     </div>
-    <footer style="background-color: #6C8A8D; color: #ffffff; padding: 2rem; text-align: center;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <!-- Logo van Zuyd, gecentreerd en licht verkleind -->
-            <img src="/sourceimages/ZuydLogo.png" alt="Zuyd Logo" style="width: 80px; height: auto; margin-bottom: 1rem;">
 
-            <p style="font-size: 1.1rem; margin: 0;">
+    <br />
+
+    <footer>
+        <div class="footer-content">
+            <!-- Logo van Zuyd, gecentreerd en licht verkleind -->
+            <img src="~/sourceimages/ZuydLogo.png" alt="Zuyd Logo" class="footer-logo">
+
+            <p class="footer-location">
                 <strong>Locatie:</strong> Hogeschool Zuyd, Heerlen
             </p>
 
-            <p style="font-size: 0.9rem; color: #e0e0e0; margin: 0.5rem 0;">
+            <p class="footer-address">
                 Nieuw Eyckholt 300, 6419 DJ Heerlen
             </p>
 
-            <hr style="border: 0; height: 1px; background-color: #ffffff; opacity: 0.5; margin: 1.5rem 0;">
+            <hr class="footer-divider">
 
             <div>
-                <p style="margin: 0; font-size: 1.2rem;"><strong>Sponsoren van Victuz:</strong></p>
-                <ul style="list-style-type: none; padding: 0; margin: 0.5rem 0;">
-                    <li style="margin: 0.5rem 0;">Sponsor 1 - Bedrijfsnaam</li>
-                    <li style="margin: 0.5rem 0;">Sponsor 2 - Bedrijfsnaam</li>
-                    <li style="margin: 0.5rem 0;">Sponsor 3 - Bedrijfsnaam</li>
-                    <li style="margin: 0.5rem 0;">Sponsor 4 - Bedrijfsnaam</li>
+                <p class="footer-sponsors-title"><strong>Sponsoren van Victuz:</strong></p>
+                <ul class="footer-sponsors-list">
+                    <li>Sponsor 1 - Bedrijfsnaam</li>
+                    <li>Sponsor 2 - Bedrijfsnaam</li>
                 </ul>
             </div>
 
-            <p style="font-size: 0.9rem; color: #f0f0f0; margin-top: 1rem;">
+            <p class="footer-copyright">
                 &copy; 2024 Studievereniging Victuz. Alle rechten voorbehouden.
             </p>
         </div>
