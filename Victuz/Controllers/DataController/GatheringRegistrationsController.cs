@@ -61,11 +61,21 @@ namespace Victuz.Controllers.DataController
         }
 
         // GET: GatheringRegistrations/Create
-        [Authorize]
         public IActionResult Create(int Id)
         {
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
-            ViewData["UserID"] = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            bool isLoggedIn = User.Identity.IsAuthenticated;
+            if(isLoggedIn)
+            {
+                ViewData["UserID"] = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            }
+            else
+            {
+                ViewData["UserID"] = null;
+            }
+
+            ViewData["IsLoggedIn"] = isLoggedIn;
 
             var registration = new GatheringRegistration
             {
@@ -79,14 +89,39 @@ namespace Victuz.Controllers.DataController
         // POST: GatheringRegistrations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, [Bind("UserId,RegistrationDate")] GatheringRegistration gatheringRegistration)
+        public async Task<IActionResult> Create(int id, string name,  [Bind("RegistrationDate")] GatheringRegistration gatheringRegistration)
         {
-            gatheringRegistration.UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            string redirectToCon;
+            string redirectToPage;
+
             gatheringRegistration.RegistrationDate = DateTime.Now;
             gatheringRegistration.GatheringId = id;
+
+            if(User.Identity.IsAuthenticated)
+            {
+                gatheringRegistration.UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                redirectToCon = "Gatherings";
+                redirectToPage = "MyEvents";
+            }
+            else
+            {
+                var newUser = new User
+                {
+                    UserName = name,
+                    Password = "defaultPassword" + name,
+                    RoleId = 3
+                };
+
+                _context.users.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                gatheringRegistration.UserId = newUser.UserId;
+
+                redirectToCon = "Home";
+                redirectToPage = "Index";
+            }
 
             bool ticketExists = await _context.gatheringRegistration
                     .AnyAsync(gr => gr.UserId == gatheringRegistration.UserId && gr.GatheringId == gatheringRegistration.GatheringId);
@@ -99,13 +134,11 @@ namespace Victuz.Controllers.DataController
 
             if (ModelState.IsValid)
             {       
-
-                    
                 _context
                     .Add(gatheringRegistration);
                 await _context
                     .SaveChangesAsync();
-                return RedirectToAction("MyEvents", "Gatherings");
+                return RedirectToAction(redirectToPage, redirectToCon);
             }
 
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle", gatheringRegistration.GatheringId);

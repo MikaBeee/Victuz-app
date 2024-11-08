@@ -320,6 +320,7 @@ namespace Victuz.Controllers.DataController
         {
             var roles = _context.role
                 .Where(r => r.RoleName != "Admin") // of filter op RoleId: r.RoleId != adminRoleId
+                .Where(r => r.RoleName != "guest")
                 .Select(r => new { r.RoleId, r.RoleName })
                 .ToList();
 

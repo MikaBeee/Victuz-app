@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Victuz.Data;
 
@@ -11,9 +12,11 @@ using Victuz.Data;
 namespace Victuz.Migrations
 {
     [DbContext(typeof(VictuzDB))]
-    partial class VictuzDBModelSnapshot : ModelSnapshot
+    [Migration("20241108184226_AddedIsMember")]
+    partial class AddedIsMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,6 +225,9 @@ namespace Victuz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<bool>("IsMember")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -243,6 +249,7 @@ namespace Victuz.Migrations
                         new
                         {
                             UserId = 1,
+                            IsMember = true,
                             Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                             RoleId = 1,
                             UserName = "admin"
@@ -250,6 +257,7 @@ namespace Victuz.Migrations
                         new
                         {
                             UserId = 2,
+                            IsMember = true,
                             Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                             RoleId = 2,
                             UserName = "mika"
@@ -257,6 +265,7 @@ namespace Victuz.Migrations
                         new
                         {
                             UserId = 3,
+                            IsMember = true,
                             Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                             RoleId = 2,
                             UserName = "sven"
@@ -264,6 +273,7 @@ namespace Victuz.Migrations
                         new
                         {
                             UserId = 4,
+                            IsMember = true,
                             Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                             RoleId = 2,
                             UserName = "charlotte"

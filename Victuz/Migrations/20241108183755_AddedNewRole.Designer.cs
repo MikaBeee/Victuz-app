@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Victuz.Data;
 
@@ -11,9 +12,11 @@ using Victuz.Data;
 namespace Victuz.Migrations
 {
     [DbContext(typeof(VictuzDB))]
-    partial class VictuzDBModelSnapshot : ModelSnapshot
+    [Migration("20241108183755_AddedNewRole")]
+    partial class AddedNewRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,28 +246,28 @@ namespace Victuz.Migrations
                         new
                         {
                             UserId = 1,
-                            Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                            Password = "123",
                             RoleId = 1,
                             UserName = "admin"
                         },
                         new
                         {
                             UserId = 2,
-                            Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                            Password = "123",
                             RoleId = 2,
                             UserName = "mika"
                         },
                         new
                         {
                             UserId = 3,
-                            Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                            Password = "123",
                             RoleId = 2,
                             UserName = "sven"
                         },
                         new
                         {
                             UserId = 4,
-                            Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                            Password = "123",
                             RoleId = 2,
                             UserName = "charlotte"
                         });

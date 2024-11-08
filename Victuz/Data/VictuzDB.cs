@@ -72,6 +72,11 @@ namespace Victuz.Data
                 {
                     RoleId = 2,
                     RoleName = "user"
+                },
+                new Role
+                {
+                    RoleId = 3,
+                    RoleName = "guest"
                 });
 
             modelBuilder.Entity<Category>().HasData(
@@ -96,28 +101,28 @@ namespace Victuz.Data
                 {
                     UserId = 1,
                     UserName = "admin",
-                    Password = "123",
+                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                     RoleId = 1
                 },
                 new User
                 {
                     UserId = 2,
                     UserName = "mika",
-                    Password = "123",
+                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                     RoleId = 2
                 },
                 new User
                 {
                     UserId = 3,
                     UserName = "sven",
-                    Password = "123",
+                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                     RoleId = 2
                 },
                 new User
                 {
                     UserId = 4,
                     UserName = "charlotte",
-                    Password = "123",
+                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
                     RoleId = 2
                 });
         }

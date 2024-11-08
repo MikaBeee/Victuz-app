@@ -2,9 +2,8 @@
 
 @{
     ViewData["Title"] = "Create";
-}
-@{
     var errorMessage = TempData["ErrorMessage"] as string;
+    bool isLoggedIn = ViewData["IsLoggedIn"] != null && (bool)ViewData["IsLoggedIn"];
 }
 
 
@@ -18,16 +17,26 @@
                 <br />
                 <input asp-for="UserId" type="hidden" value="@ViewData["UserID"]" />
             </div>
+
+            @if(!isLoggedIn)
+            {
+                <div class="form-group">
+                    <label for="UserName" class="label-act">Naam</label>
+                    <input name="name" class="form-control" placeholder="Vul uw naam in" />
+                    <span asp-validation-for="User.UserName" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input name="name" type="hidden" value="@User.Identity.Name" />
+            }
+
             <div class="form-group">
                 <label for="GatheringId" class="label-act">Activiteit</label>
                 <select asp-for="GatheringId" class="form-control" asp-items="ViewBag.GatheringId" disabled></select>
                 <input type="hidden" asp-for="GatheringId" />
             </div>
-            <div class="form-group">
-                <label for="RegistrationDate" class="label-act">Datum ticket</label>
-                <input asp-for="RegistrationDate" class="form-control" readonly />
-                <span asp-validation-for="RegistrationDate" class="text-danger"></span>
-            </div>
+
             <br />
             @if (!string.IsNullOrEmpty(errorMessage))
             {
