@@ -52,9 +52,6 @@ namespace Victuz.Controllers.HTMLController
             return View(forums);
         }
 
-
-
-
         public IActionResult Dashboard()
         {
             return View();
@@ -82,9 +79,6 @@ namespace Victuz.Controllers.HTMLController
                 StatusCode = statusCode,  // Pass status code to view
                 StatusDescription = statusDescription // You can pass the description if needed in the view
             });
-
-
-            
         }
     }
 }

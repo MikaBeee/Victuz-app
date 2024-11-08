@@ -26,7 +26,9 @@
 
 
                             <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px; ">
-                                <a href="@Url.Action("Create", "GatheringRegistrations", new {eventId = Model.GatheringId})" class="button text-white" style="font-size: 25px; font-weight: 600;" >Reserveren</a>
+                                <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600;">
+                                    Reserveren
+                                </a>
                             </dd>
                     </div>
                 </div>

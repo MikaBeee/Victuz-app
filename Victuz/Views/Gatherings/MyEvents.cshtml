@@ -11,24 +11,12 @@
 
 
 <div style="position: relative; top: 30px;">
-    @if (User.Identity.IsAuthenticated)
-    {
-        <div class="fw-bold" style="font-size: xx-large">
-            Activiteiten
-            <button class="custom-btn button-creme">
-                <a class="no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="MyEvents">Mijn activiteiten</a>
-            </button>
-        </div>
-    }
-    else
-    {
-        <div class="fw-bold" style="font-size: xx-large">
-            Activiteiten
-            <button class="custom-btn button-creme">
-                <a class="no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Mijn activiteiten</a>
-            </button>
-        </div>
-    }
+    <div class="fw-bold" style="font-size: xx-large">
+        Activiteiten
+        <button class="custom-btn button-creme">
+            <a class="no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="AllGatherings">Alle activiteiten</a>
+        </button>
+    </div>
 
     @foreach (var item in Model) {
 

@@ -16,17 +16,15 @@
             <div>
                 <span class="title-act">Aanmelden voor activiteit</span>
                 <br />
-                <label for="UserId" class="label-act">Naam (voor en achternaam)</label>
-                <input asp-for="UserId" class="form-control" placeholder="Vul hier je naam in" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <input asp-for="UserId" type="hidden" value="@ViewData["UserID"]" />
             </div>
             <div class="form-group">
                 <label for="GatheringId" class="label-act">Activiteit</label>
-                <select asp-for="GatheringId" class ="form-control" asp-items="ViewBag.GatheringId"></select>
+                <select asp-for="GatheringId" class="form-control" asp-items="ViewBag.GatheringId" disabled="disabled"></select>
             </div>
             <div class="form-group">
                 <label for="RegistrationDate" class="label-act">Geboortedatum</label>
-                <input asp-for="RegistrationDate" class="form-control" />
+                <input asp-for="RegistrationDate" class="form-control" type="date" />
                 <span asp-validation-for="RegistrationDate" class="text-danger"></span>
             </div>
             <br />

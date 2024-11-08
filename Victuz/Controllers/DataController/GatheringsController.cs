@@ -11,6 +11,7 @@ using Victuz.Migrations;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Victuz.Controllers.DataController
 {
@@ -60,6 +61,23 @@ namespace Victuz.Controllers.DataController
                 .Include(g => g.Category)
                 .Include(g => g.Location);
             return View(await victuzDB.ToListAsync());
+        }
+
+
+        public async Task<IActionResult> MyEvents()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // This is where the UserId is usually stored
+
+            // Set the UserId value into ViewData to be used in the view
+            ViewData["UserId"] = userId;
+
+            var registeredGatherings = _context.gathering
+                .Include(g => g.Category)
+                .Include(g => g.Location)
+                .Where(g => g.GatheringRegistrations.Any(gr => gr.UserId == Convert.ToInt32(userId)))
+                .ToListAsync();
+
+            return View(await registeredGatherings);
         }
 
         // GET: Gatherings/Create

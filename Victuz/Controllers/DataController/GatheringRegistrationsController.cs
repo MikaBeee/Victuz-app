@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,15 +62,18 @@ namespace Victuz.Controllers.DataController
 
         // GET: GatheringRegistrations/Create
         [Authorize]
+        [HttpGet("GatheringRegistrations/Create/{Id:int}")]
         public IActionResult Create(int Id)
         {
             ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle");
+            ViewData["UserID"] = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             var registration = new GatheringRegistration
             {
                 GatheringId = Id
             };
 
-            return View();
+            return View(registration);
         }
 
         // POST: GatheringRegistrations/Create
@@ -78,8 +82,12 @@ namespace Victuz.Controllers.DataController
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,RegistrationDate")] int Id, GatheringRegistration gatheringRegistration)
+        public async Task<IActionResult> Create(int id, [Bind("UserId,RegistrationDate")] GatheringRegistration gatheringRegistration)
         {
+            gatheringRegistration.UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            gatheringRegistration.RegistrationDate = DateTime.Now;
+            gatheringRegistration.GatheringId = id;
+
             bool ticketExists = await _context.gatheringRegistration
                     .AnyAsync(gr => gr.UserId == gatheringRegistration.UserId && gr.GatheringId == gatheringRegistration.GatheringId);
 
@@ -95,12 +103,11 @@ namespace Victuz.Controllers.DataController
                     .Add(gatheringRegistration);
                 await _context
                     .SaveChangesAsync();
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("MyEvents", "Gatherings");
             }
 
-            
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Password", gatheringRegistration.UserId);
-            return View();
+            ViewData["GatheringId"] = new SelectList(_context.gathering, "GatheringId", "GatheringTitle", gatheringRegistration.GatheringId);
+            return View(gatheringRegistration);
         }
 
         // GET: GatheringRegistrations/Edit/5
