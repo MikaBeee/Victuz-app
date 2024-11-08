@@ -575,29 +575,45 @@ tr:hover {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 .featured-activity {
-    display: flex;
+    display: 300px;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Houdt de hele container gecentreerd */
     margin-bottom: 20px;
-    text-align: center;
 }
 
-    .featured-activity img {
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        border-radius: 8px;
-    }
+.featured-activity-content {
+    display: flex;
+    flex-direction: row; /* Plaatst afbeelding en tekstblok naast elkaar */
+    align-items: flex-start; /* Zorgt dat de tekst uitgelijnd is met de bovenkant van de afbeelding */
+    gap: 20px; /* Ruimte tussen afbeelding en tekstblok */
+}
+
+.featured-activity img {
+    max-width: 300px; /* Pas dit naar wens aan */
+    height: auto;
+    border-radius: 8px;
+}
+
+.text-content {
+    display: flex;
+    flex-direction: column; /* Zorgt dat titel en beschrijving onder elkaar staan */
+    text-align: left;
+}
 
 .featured-title {
     font-size: 24px;
     font-weight: bold;
-    margin-top: 10px;
+    margin: 0 0 10px 0; /* Ruimte onder de titel */
 }
 
-/* Styles for the smaller, horizontally scrolling activities */
-.activities-container {
+.featured-description {
+    font-size: 16px;
+}
+
+    /* Styles for the smaller, horizontally scrolling activities */
+    .activities-container {
     display: flex;
     overflow-x: auto;
     gap: 16px;

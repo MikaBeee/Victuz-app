@@ -21,18 +21,21 @@
             var firstActivity = Model.gatherings.First();
             <form asp-controller="Gatherings" asp-action="Details" asp-route-id="@firstActivity.GatheringId" class="featured-activity">
                 <button class="homepage-btn">
-                    <div>
+                    <div class="featured-activity">
+                        <div class="featured-activity-content">
                         <img src="@(firstActivity.Photopath != null ? Url.Content(firstActivity.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
                              alt="@firstActivity.GatheringTitle" />
+                            <div class="text-content">
                         <div class="featured-title">@firstActivity.GatheringTitle</div>
-                        <div class="featured-title">@firstActivity.GatheringDescription</div>
-                        <div class="featured-title">@firstActivity.Location.LocName</div>
+                            <div class="featured-description">@firstActivity.GatheringDescription</div>
+                        </div>
+                            </div>
                     </div>
                 </button>
             </form>
         }
 
-        <h2>andere activiteiten</h2>
+        <h2>Andere opkomende activiteiten</h2>
         <div class="activities-container">
             @foreach (var activity in Model.gatherings.Skip(1))
             {

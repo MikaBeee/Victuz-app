@@ -18,7 +18,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="fw-bold" style="font-size: xx-large">
-            Activiteiten
+            Alle activiteiten
 
                 <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="MyEvents">Mijn activiteiten</a>
 
@@ -27,7 +27,7 @@
     else
     {
         <div class="fw-bold" style="font-size: xx-large">
-            Activiteiten
+            Alle activiteiten
 
                     <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Mijn activiteiten</a>
         </div>
