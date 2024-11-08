@@ -18,6 +18,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.GatheringId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.GatheringTitle)
             </th>
             <th>
@@ -41,6 +44,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <th>
+                @Html.DisplayFor(modelitem => item.GatheringId)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.GatheringTitle)
             </td>
