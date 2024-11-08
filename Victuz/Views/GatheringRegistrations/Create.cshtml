@@ -20,7 +20,8 @@
             </div>
             <div class="form-group">
                 <label for="GatheringId" class="label-act">Activiteit</label>
-                <select asp-for="GatheringId" class="form-control" asp-items="ViewBag.GatheringId" readonly></select>
+                <select asp-for="GatheringId" class="form-control" asp-items="ViewBag.GatheringId" disabled></select>
+                <input type="hidden" asp-for="GatheringId" />
             </div>
             <div class="form-group">
                 <label for="RegistrationDate" class="label-act">Datum ticket</label>

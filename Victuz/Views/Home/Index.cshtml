@@ -15,7 +15,7 @@
     <section class="activities font">
         
 
-        <h2>Onze volgende Activiteit!</h2>
+        <h2>Onze volgende activiteit!</h2>
         @if (Model.gatherings != null && Model.gatherings.Any())
         {
             var firstActivity = Model.gatherings.First();
@@ -32,7 +32,7 @@
             </form>
         }
 
-        <h2>andere Activiteiten</h2>
+        <h2>andere activiteiten</h2>
         <div class="activities-container">
             @foreach (var activity in Model.gatherings.Skip(1))
             {
