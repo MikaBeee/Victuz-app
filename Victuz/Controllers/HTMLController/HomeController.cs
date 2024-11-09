@@ -31,6 +31,7 @@ namespace Victuz.Controllers.HTMLController
             var model = new OrderViewModel
             {
                 gatherings = _context.gathering
+                .Where(g => g.IsSuggested == false)
                 .Include(g => g.Location)
                 .OrderBy(g => g.Date)
                 .ToList() ?? new List<Gathering>(),
@@ -60,8 +61,18 @@ namespace Victuz.Controllers.HTMLController
         }
 
         [Authorize(Roles = "admin")]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
+            var newSuggestionsCount = await _context.gathering
+                .Where(g => g.IsSuggested == true)
+                .Where(g => g.Votes.Count > 3)
+                .CountAsync();
+
+            if (newSuggestionsCount > 0)
+            {
+                ViewData["NewSuggestions"] = $"Er is een nieuwe suggestie voor een activiteit! ({newSuggestionsCount} nieuwe suggesties)";
+            }
+
             return View();
         }
 

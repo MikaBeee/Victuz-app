@@ -17,54 +17,26 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Titel
-            </th>
-            <th>
-                Beschrijving
-            </th>
-            <th>
-                Max deelnemers
-            </th>
-            <th>
-                Datum
-            </th>
-            <th>
-                Locatie
-            </th>
-            <th>
-                Categorie
-            </th>
+            <th>ID</th>
+            <th>Titel</th>
+            <th>Beschrijving</th>
+            <th>Max deelnemers</th>
+            <th>Datum</th>
+            <th>Locatie</th>
+            <th>Categorie</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <th>
-                @Html.DisplayFor(modelitem => item.GatheringId)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.GatheringTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GatheringDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxParticipants)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.LocName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CatName)
-            </td>
+            <th>@Html.DisplayFor(modelitem => item.GatheringId)</th>
+            <td>@Html.DisplayFor(modelItem => item.GatheringTitle)</td>
+            <td>@Html.DisplayFor(modelItem => item.GatheringDescription)</td>
+            <td>@Html.DisplayFor(modelItem => item.MaxParticipants)</td>
+            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+            <td>@Html.DisplayFor(modelItem => item.Location.LocName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Category.CatName)</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.GatheringId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.GatheringId">Details</a> |
