@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "My Events";
 }
+
 <!DOCTYPE html>
 
 <html>
@@ -34,12 +35,16 @@
                     <h1 class="fw-bold">
                         @Html.DisplayFor(modelItem => item.GatheringTitle)
                     </h1>
-                    <p style="font-size: 20px;">
+                    <p style="font-size: 20px; margin-bottom: 40px">
                         @Html.DisplayFor(modelItem => item.GatheringDescription)
                     </p>
                 </div>
             </div>
             </a>
+            <a asp-action="Details" asp-controller="GatheringRegistrations" asp-route-userid="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" asp-route-gatheringid="@item.GatheringId" class=" custom-btn button-creme no-underline text-black fw-bold" style="bottom: 70px">
+                Ticket
+            </a>
+
     }
     </div>
 </body>
