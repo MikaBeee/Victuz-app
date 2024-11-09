@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Victuz.Models.Businesslayer.Gathering>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titel</th>
+                <th>Beschrijving</th>
+                <th>Max deelnemers</th>
+                <th>Datum</th>
+                <th>Locatie</th>
+                <th>Categorie</th>
+                <th>voorgesteld</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>@Html.DisplayFor(modelitem => item.GatheringId)</th>
+                    <td>@Html.DisplayFor(modelItem => item.GatheringTitle)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GatheringDescription)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaxParticipants)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Location.LocName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category.CatName)</td>
+                    <td>
+                        @if (Convert.ToBoolean(item.IsSuggested))
+                        {
+                            <p>ja</p>
+                        }
+                        else
+                        {
+                            <p>nee</p>
+                        }
+                    </td>
+                    <td>
+                        <form asp-controller="Gatherings" asp-action="Edit" asp-route-id="@item.GatheringId" method="get" style="display:inline;">
+                            <button type="submit" class="custom-btn button-creme">
+                                Edit
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-controller="Gatherings" asp-action="AccepteerSuggestie" asp-route-gatheringId="@item.GatheringId" method="post" style="display:inline;">
+                            <button type="submit" class="custom-btn button-creme">
+                                Accepteer
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Home/Dashboard">Terug naar dashboard</a>
+</body>
+</html>

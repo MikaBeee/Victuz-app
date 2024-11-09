@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Victuz.Data;
 
@@ -11,9 +12,11 @@ using Victuz.Data;
 namespace Victuz.Migrations
 {
     [DbContext(typeof(VictuzDB))]
-    partial class VictuzDBModelSnapshot : ModelSnapshot
+    [Migration("20241109142506_AddedVotesTable")]
+    partial class AddedVotesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,8 +286,6 @@ namespace Victuz.Migrations
 
                     b.HasKey("UserId", "GatheringId");
 
-                    b.HasIndex("GatheringId");
-
                     b.ToTable("votes");
                 });
 
@@ -360,7 +361,7 @@ namespace Victuz.Migrations
                 {
                     b.HasOne("Victuz.Models.Businesslayer.Gathering", "Gathering")
                         .WithMany("Votes")
-                        .HasForeignKey("GatheringId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

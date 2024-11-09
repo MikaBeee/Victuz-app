@@ -1,0 +1,69 @@
+﻿@model Victuz.Models.Businesslayer.Gathering
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+    <h4>Gathering</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="CreateSuggestion" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Titel</label>
+                    <input asp-for="GatheringTitle" class="form-control" />
+                    <span asp-validation-for="GatheringTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Beschrijving</label>
+                    <input asp-for="GatheringDescription" class="form-control" />
+                    <span asp-validation-for="GatheringDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Max deelnemers</label>
+                    <input asp-for="MaxParticipants" class="form-control" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Datum en tijd</label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Locatie</label>
+                    <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Categorie</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                </div>
+                <div class="form-group">
+                    <label>Foto</label>
+                    <input type="file" name="Photo" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="SuggestedActivity">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

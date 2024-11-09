@@ -16,6 +16,7 @@ namespace Victuz.Models.Businesslayer
         public int RoleId { get; set; }
         public Role? Role { get; set; }
 
+        public ICollection<Vote>? Votes { get; set; }
         public ICollection<Post>? Posts { get; set; }
         public ICollection<GatheringRegistration>? GatheringRegistrations { get; set; }
     }

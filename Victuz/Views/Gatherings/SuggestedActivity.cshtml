@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Victuz.Models.Businesslayer.Gathering>
+
+@{
+    ViewData["Title"] = "Gatherings";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+</head>
+<body>
+
+
+    <div style="position: relative; top: 30px;">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="fw-bold" style="font-size: xx-large">
+                Alle suggesties voor activiteiten
+
+                <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Gatherings" asp-action="CreateSuggestion">Geef suggestie</a>
+
+            </div>
+        }
+        else
+        {
+            <div class="fw-bold" style="font-size: xx-large">
+                Alle suggesties voor activiteiten
+
+                <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Geef suggestie</a>
+            </div>
+        }
+
+        @foreach (var item in Model)
+        {
+
+            <a asp-action="Details" asp-route-id="@item.GatheringId" class="no-underline">
+                <div class="activitylist text-white no-underline" style="display: flex; ">
+
+                    <img class="card-img-top"
+                         style="height: 200px; width: 318px; object-fit: cover; border: inset #004E5C; margin-right: 20px;"
+                         src="@(item.Photopath != null ? Url.Content(item.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
+                         alt="@item.GatheringTitle" />
+                    <div style="flex-grow: 1;">
+                        <h1 class="fw-bold">
+                            @Html.DisplayFor(modelItem => item.GatheringTitle)
+                        </h1>
+                        <p style="font-size: 20px;">
+                            @Html.DisplayFor(modelItem => item.GatheringDescription)
+                        </p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</body>
+</html>

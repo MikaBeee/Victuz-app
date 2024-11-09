@@ -13,10 +13,10 @@
         <div class="card gatheringdetails" style="min-height:750px">
             <div class="row g-0 ">
                 <div class="col-md-8">
-                    
+
                     <div class="card-body ">
                         <dl class="row">
-                            <dd class="fw-bold card-title" style="font-size: xx-large" >@Html.DisplayFor(model => model.GatheringTitle)</dd>
+                            <dd class="fw-bold card-title" style="font-size: xx-large">@Html.DisplayFor(model => model.GatheringTitle)</dd>
 
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Location.LocName)</dd>
 
@@ -25,34 +25,74 @@
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Category.CatName)</dd>
 
 
+                            @if (!Convert.ToBoolean(Model.IsSuggested))
+                            {
+                                <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px;">
 
-                            <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px;">
+                                    @if (ViewData["IsUserRegistered"] != null && (bool)ViewData["IsUserRegistered"])
+                                    {
+                                        <form asp-controller="GatheringRegistrations" asp-action="Delete"
+                                                asp-route-userid="@User.FindFirstValue(ClaimTypes.NameIdentifier)"
+                                                asp-route-gatheringid="@Model.GatheringId"
+                                                method="post" style="display: inline-block; width: 100%;">
 
-                                @if (ViewData["IsUserRegistered"] != null && (bool)ViewData["IsUserRegistered"])
+                                            <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;" onclick="return confirm('Weet u het zeker dat u zich wilt afmelden?');">
+                                                Uitschrijven
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
+                                            Inschrijven
+                                        </a>
+                                    }
+                                </dd>
+                            }
+                            else
+                            {
+                                @if (!User.Identity.IsAuthenticated)
                                 {
-                                    <form asp-controller="GatheringRegistrations" asp-action="Delete"
-                                          asp-route-userid="@User.FindFirstValue(ClaimTypes.NameIdentifier)"
-                                          asp-route-gatheringid="@Model.GatheringId"
-                                          method="post" style="display: inline-block; width: 100%;">
-
-                                        <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;" onclick="return confirm('Weet u het zeker dat u zich wilt afmelden?');">
-                                            Uitschrijven
-                                        </button>
-                                    </form>
+                                    <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 40%; position: relative; top: 400px;">
+                                        <form asp-controller="Users" asp-action="AccountReg" method="get" style="display: inline-block; width: 100%;">
+                                            <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;" >
+                                                Aanmelden
+                                            </button>
+                                        </form>
+                                    </dd>
                                 }
                                 else
                                 {
-                                    <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
-                                        Inschrijven
-                                    </a>
+                                    <dd class="col-sm-9" style="font-size: large">aantal stemmen op deze activiteit is: @Html.DisplayFor(model => model.VotesCount)</dd>
+                                    if (ViewData["HasVoted"] != null && (bool)ViewData["HasVoted"])
+                                    {
+                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 400px;">
+                                            <form asp-controller="Votes" asp-action="Delete" asp-route-gatheringId="@Model.GatheringId" method="post" style="display: inline-block; width: 100%;">
+                                                <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;">
+                                                    Stem terug trekken
+                                                </button>
+                                            </form>
+                                        </dd>
+                                    }
+                                    else
+                                    {
+                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 400px;">
+                                            <form asp-controller="Votes" asp-action="Vote" asp-route-gatheringid="@Model.GatheringId" method="post" style="display: inline-block; width: 100%;">
+                                                <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;">
+                                                    Stem op deze activiteit
+                                                </button>
+                                            </form>
+                                        </dd>
+                                    }
                                 }
-                            </dd>
+                            }
+                        </dl>
                     </div>
                 </div>
                 <div class="col-md-4" style="position: relative; top: 20px; right: 25%">
                     <img class="card-img-top" style="height: 400px; width: auto; object-fit: cover; border: inset #004E5C; "
-                         src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
-                         alt="@Model.GatheringTitle" />
+                            src="@(Model.Photopath != null ? Url.Content(Model.Photopath) : Url.Content("~/placeholder/360_F_137686564_aEgvXfzDIcolGWltXqe51f5XZAPGMXtn.jpg"))"
+                            alt="@Model.GatheringTitle" />
                     <div style="position: relative; top: 20px;">
                         <b class="col-sm-3" style="font-size: large">Beschrijving</b>
                         <div class="card-body forum-container border text-white rounded" style="position: relative;  width: 600px; max-height: auto; height: 200px;">
@@ -61,8 +101,10 @@
                     </div>
 
                 </div>
-            </div>    
+            </div>
         </div>
-        </div>
+    </div>
 </body>
 </html>
+
+                                        

@@ -15,6 +15,7 @@ namespace Victuz.Data
         public DbSet<Post> post { get; set; }
         public DbSet<Role> role { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<Vote> votes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,6 +27,9 @@ namespace Victuz.Data
         {
             modelBuilder.Entity<GatheringRegistration>()
                 .HasKey(gr => new { gr.UserId, gr.GatheringId});
+
+            modelBuilder.Entity<Vote>()
+                .HasKey(v => new { v.UserId, v.GatheringId });
 
             modelBuilder.Entity<Gathering>()
                 .HasOne(g => g.Location)
@@ -61,6 +65,16 @@ namespace Victuz.Data
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<Vote>()
+                .HasOne(v => v.User)
+                .WithMany(u => u.Votes)
+                .HasForeignKey(v => v.UserId);
+
+            modelBuilder.Entity<Vote>()
+                .HasOne(v => v.Gathering)
+                .WithMany(u => u.Votes)
+                .HasForeignKey(v => v.GatheringId);
 
             modelBuilder.Entity<Role>().HasData(
                 new Role
