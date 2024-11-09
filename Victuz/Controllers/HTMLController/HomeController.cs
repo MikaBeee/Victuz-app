@@ -65,6 +65,49 @@ namespace Victuz.Controllers.HTMLController
             return View();
         }
 
+        [Authorize(Roles = "admin")]
+        public IActionResult TicketScanner() 
+        {
+            return View();
+        }
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public IActionResult GetTicketDetailsbyUniqueCode(string ticketGuid)
+        {
+            // Decode the ticketGuid to extract GatheringId, UserId, and RegistrationDate
+            string[] parts = ticketGuid.Split('-');
+            if (parts.Length != 3)
+            {
+                return BadRequest("Invalid ticket GUID format.");
+            }
+
+            int gatheringId = int.Parse(parts[0]);
+            int userId = int.Parse(parts[1]);
+
+
+            // Retrieve the ticket based on these values
+            var ticket = _context.gatheringRegistration
+                .Include(gr => gr.User)      // Include the User related to the registration
+                .Include(gr => gr.Gathering) // Include the Gathering related to the registration
+                .Where(gr => gr.GatheringId == gatheringId && gr.UserId == userId)
+                .Select(gr => new
+                {
+                    UserName = gr.User.UserName,
+                    GatheringTitle = gr.Gathering.GatheringTitle,
+                    RegistrationDate = gr.RegistrationDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    UniqueCode = $"{gr.GatheringId}-{gr.UserId}-{gr.RegistrationDate:MM/dd/yyyy HH:mm:ss}",
+                    TicketImageUrl = Url.Action("GetTicketImage", "GatheringRegistrations", new { guid = $"{gr.GatheringId}-{gr.UserId}-{gr.RegistrationDate:MM/dd/yyyy HH:mm:ss}" })
+                })
+                .FirstOrDefault();
+
+            if (ticket == null)
+            {
+                return NotFound(); // Return 404 if ticket not found
+            }
+
+            return Ok(ticket); // Return the ticket details as JSON
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode = null)
         {

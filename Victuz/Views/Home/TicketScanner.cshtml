@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Ticket Scanner";
+}
+
+<div id="reader" style="width:600px; height:600px; border: 1px solid black;"></div>
+<div id="result" style="margin-top:20px;"></div>
+<button id="startButton" style="display: none">Start Scanning</button>
+<button id="stopButton" style="display:none;">Stop Scanning</button>
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<script>
+    let scannedTicketGuid = "";
+    
+    function onScanSuccess(qrCodeMessage) {
+        console.log(`Scanned QR Code: ${qrCodeMessage}`);
+        scannedTicketGuid = qrCodeMessage;
+
+        fetch(`/Home/GetTicketDetailsbyUniqueCode?ticketGuid=${qrCodeMessage}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched Data:", data); // Debug: Log the entire response
+
+                if (data) {
+                    // Check and populate each element
+                    const nameElement = document.getElementById('userName');
+                    const titleElement = document.getElementById('gatheringTitle');
+                    const dateElement = document.getElementById('registrationDate');
+                    const codeElement = document.getElementById('uniqueCode');
+
+                    if (nameElement) nameElement.innerText = data.userName || "N/A";
+                    if (titleElement) titleElement.innerText = data.gatheringTitle || "N/A";
+                    if (dateElement) dateElement.innerText = data.registrationDate || "N/A";
+                    if (codeElement) codeElement.innerText = data.uniqueCode || "N/A";
+
+                    // Show the ticket details section
+                    document.getElementById('ticketDetails').style.display = 'block';
+                } else {
+                    document.getElementById('result').innerText = 'No ticket found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching ticket details:', error);
+                document.getElementById('result').innerText = 'Error fetching ticket details.';
+            });
+    }
+
+    function onScanError(errorMessage) {
+        console.warn(`QR Code scan error: ${errorMessage}`);
+    }
+
+    const html5QrcodeScanner = new Html5Qrcode("reader");
+
+    function startScanning() {
+        console.log("Starting QR code scanning...");
+        html5QrcodeScanner.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess,
+            onScanError
+        ).then(() => {
+            document.getElementById('stopButton').style.display = "block";
+        }).catch(err => {
+            console.error(`Unable to start scanning: ${err}`);
+        });
+    }
+
+    document.getElementById('stopButton').addEventListener('click', () => {
+        console.log("Stopping QR code scanning...");
+        html5QrcodeScanner.stop().then(ignore => {
+            document.getElementById('stopButton').style.display = "none";
+        }).catch(err => {
+            console.error(`Error stopping the scanner: ${err}`);
+        });
+    });
+    
+
+    // Start scanning on page load
+    startScanning();
+</script>
+
+<div id="ticketDetails" style="display: none; margin-top: 20px;">
+    <h4>Ticket Details</h4>
+    <div>
+        <strong>Name:</strong> <span id="userName"></span>
+    </div>
+    <div>
+        <strong>Event Title:</strong> <span id="gatheringTitle"></span>
+    </div>
+    <div>
+        <strong>Registration Date:</strong> <span id="registrationDate"></span>
+    </div>
+    <div>
+        <strong>Unique Code:</strong> <span id="uniqueCode"></span>
+    </div>
+    <button onclick="deleteTicket()" class="btn btn-danger" style="margin-top: 20px;">Delete Ticket</button>
+    <div id="result" style="margin-top: 10px; color: red;"></div>
+</div>

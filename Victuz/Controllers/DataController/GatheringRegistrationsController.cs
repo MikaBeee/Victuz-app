@@ -29,7 +29,7 @@ namespace Victuz.Controllers.DataController
         {
 
             var referrer = Request.Headers["Referer"].ToString();
-            if (!referrer.Contains("/GatheringRegistrations/Details"))
+            if (!(referrer.Contains("/GatheringRegistrations/Details") || referrer.Contains("/Home/TicketScanner")))
             {
                 return RedirectToAction("Error", "Home", new { statusCode = 403 });
             }
