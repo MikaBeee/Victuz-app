@@ -44,6 +44,8 @@ namespace Victuz.Controllers.DataController
 
             return View(gatheringRegistration);
         }
+
+
         [Authorize(Roles = "admin")]
         public async Task<List<GatheringRegistrationVM>> AllGatheringRegistration()
         {
