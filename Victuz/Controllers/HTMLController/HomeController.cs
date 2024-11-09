@@ -77,26 +77,44 @@ namespace Victuz.Controllers.HTMLController
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int? statusCode = null)
         {
-
-            var statusCode = HttpContext.Response.StatusCode;
+            // Use the provided status code if available, otherwise, use the current response status code
+            var code = statusCode ?? HttpContext.Response.StatusCode;
             string statusDescription = "An error occurred.";
 
-            if (statusCode == 404)
+            // Customize response for different status codes
+            if (code == 404)
             {
-                return new ObjectResult(new { message = "Page not found" })
+                statusDescription = "Page not found.";
+            }
+            else if (code == 403)
+            {
+                statusDescription = "Access denied.";
+            }
+            else if (code == 500)
+            {
+                statusDescription = "Internal server error.";
+            }
+
+            // Set the correct response status code
+            HttpContext.Response.StatusCode = code;
+
+            // Optionally, return JSON for specific errors
+            if (code == 404)
+            {
+                return new ObjectResult(new { message = statusDescription })
                 {
-                    StatusCode = statusCode
+                    StatusCode = code
                 };
             }
 
-            // Default error view with status code
+            // Default error view with the status code
             return View(new ErrorViewModel
             {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                StatusCode = statusCode,  // Pass status code to view
-                StatusDescription = statusDescription // You can pass the description if needed in the view
+                StatusCode = code,
+                StatusDescription = statusDescription
             });
         }
     }

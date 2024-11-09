@@ -4,12 +4,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Victuz.Data;
 using Victuz.Models.Businesslayer;
 using Victuz.Models.Viewmodels;
+using Victuz.Methods;
 
 namespace Victuz.Controllers.DataController
 {
@@ -22,12 +24,36 @@ namespace Victuz.Controllers.DataController
             _context = context;
         }
 
+        // GET: TicketQR
+        public IActionResult GetTicketImage(string guid)
+        {
+
+            var referrer = Request.Headers["Referer"].ToString();
+            if (!referrer.Contains("/GatheringRegistrations/Details"))
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 403 });
+            }
+            var image = ImageCache.GetOrAdd(guid, QrGeneration.GenerateQrFromGuid);
+            return File(image, "image/png");
+        }
 
 
         // GET: GatheringRegistrations/Details/5
-        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? userid, int? gatheringid)
         {
+            int checkid = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            // check if the users role is admin if so he can view any tickets available
+            if (User.IsInRole("admin"))
+            {
+                goto actionpermitted;
+            }
+            // Check if the current user is authorized to view the details
+            if (userid != checkid)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 403 });
+            }
+
+            actionpermitted:
             if (userid == null || gatheringid == null)
             {
                 return NotFound();
@@ -37,6 +63,7 @@ namespace Victuz.Controllers.DataController
                 .Include(g => g.Gathering)
                 .Include(g => g.User)
                 .FirstOrDefaultAsync(m => m.UserId == userid && m.GatheringId == gatheringid);
+
             if (gatheringRegistration == null)
             {
                 return NotFound();
@@ -44,6 +71,8 @@ namespace Victuz.Controllers.DataController
 
             return View(gatheringRegistration);
         }
+
+
         [Authorize(Roles = "admin")]
         public async Task<List<GatheringRegistrationVM>> AllGatheringRegistration()
         {

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "My Events";
 }
+
 <!DOCTYPE html>
 
 <html>
@@ -37,9 +38,19 @@
                     <p style="font-size: 20px;">
                         @Html.DisplayFor(modelItem => item.GatheringDescription)
                     </p>
+                        <form asp-action="Details" asp-controller="GatheringRegistrations" method="get">
+                            <input type="hidden" name="userid" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                            <input type="hidden" name="gatheringid" value="@item.GatheringId" />
+
+                            <button type="submit" class="custom-btn button-creme no-underline text-black fw-bold">
+                                Ticket
+                            </button>
+                        </form>
                 </div>
             </div>
             </a>
+
+
     }
     </div>
 </body>

@@ -2,35 +2,74 @@
 
 @{
     ViewData["Title"] = "Details";
+    var origLayout = Layout;
 }
+@{
+    string uniquecode = Model.Gathering.GatheringId.ToString() +"-"+ Model.User.UserId.ToString() +"-"+ Model.RegistrationDate.ToString();
+}
+<script>
+    // Resize bg to 100% for ticketprinting
+    document.addEventListener("DOMContentLoaded", function () {
+        if (window.location.pathname.includes("/GatheringRegistrations/Details")) {
 
-<h1>Details</h1>
+            const style = document.createElement('style');
+            style.innerHTML = `
+                    body::before {
+                        height: 100% !important;
+                    }
+                `;
+            document.head.appendChild(style);
+        }
+    });
+    function printDiv(divName) {
+        
 
-<div>
-    <h4>GatheringRegistration</h4>
-    <hr />
-    <dl class="row">
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+<div >
+    <h4>Ticket</h4>
+    <dl class="row" >
+        <div id="TicketDiv" class="">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Naam
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Password)
+            @Html.DisplayFor(model => model.User.UserName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gathering)
+            Titel activiteit
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Gathering.GatheringTitle)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistrationDate)
+            Ticketdatum
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RegistrationDate)
         </dd>
+        <dt class="col-sm-2">
+            Unieke code
+        </dt>
+        <dd class="col-sm-10">
+            @uniquecode
+        </dd>
+        <dd class="col-sm-10">
+            <img src="@Url.Action("GetTicketImage", "GatheringRegistrations", new { guid = uniquecode  })" alt="Ticket QR" style="height: 100%; max-height: 200px; width: auto; border: inset #e5e5e5;" />
+        </dd>
+        </div>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+
+<div style ="position: relative; bottom: 40px;">
+    <a asp-controller="Home" asp-action="Index" class="custom-btn button-creme no-underline text-black fw-bold">Home</a>
+    <button class="custom-btn button-creme no-underline text-black fw-bold" onclick="printDiv('TicketDiv')" style="right: 20px;">Ticket printen</button>
+
 </div>
+
