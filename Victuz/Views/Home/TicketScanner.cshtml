@@ -20,7 +20,7 @@
         if (manualCode) {
             fetchTicketDetails(manualCode);
         } else {
-            document.getElementById("result").innerText = "Please enter a valid unique code.";
+            document.getElementById("result").innerText = "Voer alstublieft een geldige code in";
         }
     }
 
@@ -30,7 +30,7 @@
         fetch(`/Home/GetTicketDetailsbyUniqueCode?ticketGuid=${encodeURIComponent(ticketGuid)}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Netwerk probleem');
                 }
                 return response.json();
             })
@@ -42,12 +42,12 @@
                     document.getElementById("registrationDate").innerText = data.registrationDate;
                     document.getElementById("uniqueCode").innerText = data.uniqueCode;
                 } else {
-                    document.getElementById("result").innerText = "No ticket found.";
+                    document.getElementById("result").innerText = "Ticket niet gevonden.";
                 }
             })
             .catch(error => {
                 console.error("Error fetching ticket details:", error);
-                document.getElementById("result").innerText = "Error fetching ticket details.";
+                document.getElementById("result").innerText = "Probleem bij het ophalen van de ticket gegevens.";
             });
     }
 
@@ -59,7 +59,7 @@
     const html5QrcodeScanner = new Html5Qrcode("reader");
 
     function startScanning() {
-        console.log("Starting QR code scanning...");
+        console.log("Start QR code scan...");
         html5QrcodeScanner.start(
             { facingMode: "environment" },
             {
@@ -71,16 +71,16 @@
         ).then(() => {
             document.getElementById('stopButton').style.display = "block";
         }).catch(err => {
-            console.error(`Unable to start scanning: ${err}`);
+            console.error(`Probleem met het scannen: ${err}`);
         });
     }
 
     document.getElementById('stopButton').addEventListener('click', () => {
-        console.log("Stopping QR code scanning...");
+        console.log("QR code scannen wordt gestopt...");
         html5QrcodeScanner.stop().then(ignore => {
             document.getElementById('stopButton').style.display = "none";
         }).catch(err => {
-            console.error(`Error stopping the scanner: ${err}`);
+            console.error(`Error scanner stopt: ${err}`);
         });
     });
     
@@ -91,7 +91,7 @@
 <div style="margin-top: 20px;">
     <label for="manualCodeInput">Unieke code handmatig invoeren:</label>
     <input type="text" id="manualCodeInput" placeholder="format: 1-1-11/09/2024 15:43:58">
-    <button onclick="processManualCode()" class="btn btn-primary">Submit Code</button>
+    <button onclick="processManualCode()" class="custom-btn button-creme no-underline text-black fw-bold ">Enter</button>
 </div>
 
 
@@ -109,21 +109,25 @@
     <div>
         <strong>Unieke code:</strong> <span id="uniqueCode"></span>
     </div>
-    <button onclick="deleteTicket()" class="btn btn-danger" style="margin-top: 20px;">Delete Ticket</button>
+    <button onclick="deleteTicket()" class="custom-btn button-creme no-underline text-black fw-bold " style="margin-top: 20px;" >Delete Ticket</button>
     <div id="result" style="margin-top: 10px; color: red;"></div>
 </div>
 
 <script>
     function deleteTicket() {
-        // Use the scannedTicketGuid to delete the ticket
-        fetch(`/Home/DeleteTicket?ticketGuid=${scannedTicketGuid}`, {
+        const ticketGuid = document.getElementById("uniqueCode").innerText;
+        if (!ticketGuid) {
+            document.getElementById('result').innerText = 'Ticket GUID not found.';
+            return;
+        }
+
+        fetch(`/Home/DeleteTicket?ticketGuid=${encodeURIComponent(ticketGuid)}`, {
             method: 'DELETE'
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to delete ticket.');
                 }
-                // Clear ticket details and hide the section
                 document.getElementById('ticketDetails').style.display = 'none';
                 document.getElementById('result').innerText = 'Ticket deleted successfully.';
             })
