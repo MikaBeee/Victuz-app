@@ -89,7 +89,7 @@
     startScanning();
 </script>
 <div style="margin-top: 20px;">
-    <label for="manualCodeInput">Enter Unique Code Manually:</label>
+    <label for="manualCodeInput">Unieke code handmatig invoeren:</label>
     <input type="text" id="manualCodeInput" placeholder="format: 1-1-11/09/2024 15:43:58">
     <button onclick="processManualCode()" class="btn btn-primary">Submit Code</button>
 </div>
@@ -98,16 +98,16 @@
 <div id="ticketDetails" style="display: none; margin-top: 20px;">
     <h4>Ticket Details</h4>
     <div>
-        <strong>Name:</strong> <span id="userName"></span>
+        <strong>Naam:</strong> <span id="userName"></span>
     </div>
     <div>
-        <strong>Event Title:</strong> <span id="gatheringTitle"></span>
+        <strong>Titel activiteit:</strong> <span id="gatheringTitle"></span>
     </div>
     <div>
         <strong>Registration Date:</strong> <span id="registrationDate"></span>
     </div>
     <div>
-        <strong>Unique Code:</strong> <span id="uniqueCode"></span>
+        <strong>Unieke code:</strong> <span id="uniqueCode"></span>
     </div>
     <button onclick="deleteTicket()" class="btn btn-danger" style="margin-top: 20px;">Delete Ticket</button>
     <div id="result" style="margin-top: 10px; color: red;"></div>
