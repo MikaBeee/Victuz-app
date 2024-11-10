@@ -78,7 +78,7 @@
                                     <dd class="col-sm-9" style="font-size: large">aantal stemmen op deze activiteit is: @Html.DisplayFor(model => model.VotesCount)</dd>
                                     if (ViewData["HasVoted"] != null && (bool)ViewData["HasVoted"])
                                     {
-                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 400px;">
+                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 350px;">
                                             <form asp-controller="Votes" asp-action="Delete" asp-route-gatheringId="@Model.GatheringId" method="post" style="display: inline-block; width: 100%;">
                                                 <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;">
                                                     Stem terug trekken
@@ -88,7 +88,7 @@
                                     }
                                     else
                                     {
-                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 400px;">
+                                        <dd class="custom-btn-register button-creme" style="background-color: #0e616e; width: 50%; position: relative; top: 350px;">
                                             <form asp-controller="Votes" asp-action="Vote" asp-route-gatheringid="@Model.GatheringId" method="post" style="display: inline-block; width: 100%;">
                                                 <button type="submit" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; border: 2px solid transparent; cursor: pointer;">
                                                     Stem op deze activiteit

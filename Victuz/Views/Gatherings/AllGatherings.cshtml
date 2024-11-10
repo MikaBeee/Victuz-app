@@ -26,11 +26,27 @@
     }
     else
     {
-        <div class="fw-bold" style="font-size: xx-large">
-            Alle activiteiten
+            <div class="fw-bold" style="font-size: xx-large">
+                Alle activiteiten
 
-                    <a class="custom-btn button-creme no-underline text-black fw-bold" asp-controller="Users" asp-action="Login">Mijn activiteiten</a>
-        </div>
+                <!-- Button to open the modal form -->
+                <button class="custom-btn button-creme no-underline text-black fw-bold" onclick="openNamePrompt()">Mijn activiteiten</button>
+            </div>
+
+            <!-- Modal to prompt the user for their name -->
+            <div id="namePromptModal" class="card rounded-3" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid #ccc;">
+                <h5>Voer uw naam in om uw ticket(s) te bekijken</h5>
+                <input type="text" id="guestNameInput" placeholder="Uw naam" class="form-control" />
+
+                <button onclick="redirectToMyGuestEvents()" class="custom-btn button-creme no-underline text-black fw-bold" style="margin: 10px">Verzenden</button>
+            </div>
+            @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
     }
 
     @foreach (var item in Model) {
@@ -56,3 +72,19 @@
     </div>
 </body>
 </html>
+
+<script>
+    function openNamePrompt() {
+        document.getElementById('namePromptModal').style.display = 'block';
+    }
+
+    function redirectToMyGuestEvents() {
+        const guestName = document.getElementById('guestNameInput').value.trim();
+        if (guestName) {
+            // Redirect to the MyGuestEvents action with the guest's name as a query parameter
+            window.location.href = `/Gatherings/MyGuestEvents?name=${encodeURIComponent(guestName)}`;
+        } else {
+            alert("Voer alstublieft uw naam in.");
+        }
+    }
+</script>

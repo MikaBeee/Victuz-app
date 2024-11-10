@@ -29,7 +29,7 @@ namespace Victuz.Controllers.DataController
         {
 
             var referrer = Request.Headers["Referer"].ToString();
-            if (!(referrer.Contains("/GatheringRegistrations/Details") || referrer.Contains("/Home/TicketScanner")))
+            if (!(referrer.Contains("/GatheringRegistrations/Details") || referrer.Contains("/Home/TicketScanner") || referrer.Contains("/GatheringRegistrations/GuestDetails")))
             {
                 return RedirectToAction("Error", "Home", new { statusCode = 403 });
             }
@@ -56,7 +56,7 @@ namespace Victuz.Controllers.DataController
             actionpermitted:
             if (userid == null || gatheringid == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { statusCode = 404 });
             }
 
             var gatheringRegistration = await _context.gatheringRegistration
@@ -70,6 +70,38 @@ namespace Victuz.Controllers.DataController
             }
 
             return View(gatheringRegistration);
+        }
+
+
+        //Get Guestticket
+        public async Task<IActionResult> GuestDetails(int? userid, int? gatheringid)
+        {
+            // Check if name or gatheringid is provided
+            if (userid == null || gatheringid == null)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 403 }); // Unauthorized
+            }
+
+            // Retrieve the guest user by their name
+            var guestUser = await _context.users.FirstOrDefaultAsync(u => u.UserId == userid && u.RoleId == 3); // RoleId 3 is for guests
+
+            if (guestUser == null)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 404 }); // User not found
+            }
+
+            // Check if the guest has a ticket for the specific gathering
+            var gatheringRegistration = await _context.gatheringRegistration
+                .Include(gr => gr.Gathering)
+                .Include(gr => gr.User)
+                .FirstOrDefaultAsync(gr => gr.UserId == guestUser.UserId && gr.GatheringId == gatheringid);
+
+            if (gatheringRegistration == null)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 404 }); // Ticket not found for this guest
+            }
+
+            return View(gatheringRegistration); // Return the ticket details to the guest
         }
 
 

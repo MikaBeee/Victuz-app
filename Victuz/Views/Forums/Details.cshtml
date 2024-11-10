@@ -41,7 +41,7 @@
     {
         @foreach(var post in Model.Posts)
         {
-            <div class="forum-detail-item">
+            <div class="forum-detail-item" style="margin-top: 20px">
                 <p class="forum-title">by @post.User.UserName</p>
                 <p class="forum-title">on @post.PostedDate.ToString("g")</p>
                 <hr style="color: #000"/>

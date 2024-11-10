@@ -186,13 +186,6 @@ namespace Victuz.Controllers.HTMLController
             HttpContext.Response.StatusCode = code;
 
             // Optionally, return JSON for specific errors
-            if (code == 404)
-            {
-                return new ObjectResult(new { message = statusDescription })
-                {
-                    StatusCode = code
-                };
-            }
 
             // Default error view with the status code
             return View(new ErrorViewModel

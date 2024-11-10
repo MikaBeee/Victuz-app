@@ -1,6 +1,6 @@
 STANDAARD LOGINS
 
-naam: admin  ww: 123   (ADMIN RECHT)
-naam: sven  ww: 123
-naam: charlotte  ww: 123
-naam: mika  ww: 123
+naam: admin  ww: 12345678   (ADMIN RECHT)
+naam: sven  ww: 12345678
+naam: charlotte  ww: 12345678
+naam: mika  ww: 12345678

@@ -115,28 +115,28 @@ namespace Victuz.Data
                 {
                     UserId = 1,
                     UserName = "admin",
-                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                    Password = "AQAAAAIAAYagAAAAEB/mvjZCAt7PHl3COgHBFEjHDrFSZxDjJee6ReypuN148BI7ON8V1RvJtUPXugNBhg==",
                     RoleId = 1
                 },
                 new User
                 {
                     UserId = 2,
                     UserName = "mika",
-                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                    Password = "AQAAAAIAAYagAAAAEB/mvjZCAt7PHl3COgHBFEjHDrFSZxDjJee6ReypuN148BI7ON8V1RvJtUPXugNBhg==",
                     RoleId = 2
                 },
                 new User
                 {
                     UserId = 3,
                     UserName = "sven",
-                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                    Password = "AQAAAAIAAYagAAAAEB/mvjZCAt7PHl3COgHBFEjHDrFSZxDjJee6ReypuN148BI7ON8V1RvJtUPXugNBhg==",
                     RoleId = 2
                 },
                 new User
                 {
                     UserId = 4,
                     UserName = "charlotte",
-                    Password = "AQAAAAIAAYagAAAAEBvheVwG4KNnrDnEPSA0V126sHMEXyRza1BFh8fw9M/IHFui7ETKRuHJL6lQp6OUWA==",
+                    Password = "AQAAAAIAAYagAAAAEB/mvjZCAt7PHl3COgHBFEjHDrFSZxDjJee6ReypuN148BI7ON8V1RvJtUPXugNBhg==",
                     RoleId = 2
                 });
         }

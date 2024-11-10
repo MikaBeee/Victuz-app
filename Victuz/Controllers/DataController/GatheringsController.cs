@@ -98,7 +98,7 @@ namespace Victuz.Controllers.DataController
         {
             var gatherings = await _context.gathering
                 .Where(g => g.IsSuggested == true)
-                .Where(g => g.Votes.Count > 3)
+                .Where(g => g.Votes.Count >= 3)
                 .Include(g => g.Category)
                 .Include(g => g.Location)
                 .Include(g => g.Votes)
@@ -107,7 +107,7 @@ namespace Victuz.Controllers.DataController
             return View(gatherings);
         }
 
-
+        //Get My events AUTHORISED
         public async Task<IActionResult> MyEvents()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // This is where the UserId is usually stored
@@ -123,6 +123,35 @@ namespace Victuz.Controllers.DataController
 
             return View(await registeredGatherings);
         }
+
+        //Get My events as a gues without account
+        public async Task<IActionResult> MyGuestEvents(string name)
+        {
+            int roleId = 3;
+            var getGuest = await _context.users
+                .Where(g => g.UserName == name && g.RoleId == roleId)
+                .FirstOrDefaultAsync();
+
+            ViewData["UserId"] = getGuest.UserId;
+
+            if (getGuest == null)
+            {
+                // Handle case where guest is not found
+                TempData["ErrorMessage"] = "Deze tickets konden niet gevonden worden...";
+                return RedirectToAction("AllGatherings","Gatherings");
+            }
+
+            // Retrieve gatherings where this guest is registered
+            var registeredGatherings = await _context.gathering
+                .Include(g => g.Category)
+                .Include(g => g.Location)
+                .Where(g => g.GatheringRegistrations.Any(gr => gr.UserId == getGuest.UserId))
+                .ToListAsync();
+
+            return View(registeredGatherings);  
+        }
+
+
 
         // GET: Gatherings/Create
         [Authorize(Roles = "admin")]
@@ -442,6 +471,8 @@ namespace Victuz.Controllers.DataController
 
             return View(suggestedGatherings);
         }
+
+
 
         [Authorize(Roles = "admin")]
         [HttpPost]
