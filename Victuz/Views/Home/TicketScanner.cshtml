@@ -12,10 +12,22 @@
     let scannedTicketGuid = "";
     
     function onScanSuccess(qrCodeMessage) {
-        console.log(`Scanned QR Code: ${qrCodeMessage}`);
-        scannedTicketGuid = qrCodeMessage;
+        fetchTicketDetails(qrCodeMessage); 
+    }
 
-        fetch(`/Home/GetTicketDetailsbyUniqueCode?ticketGuid=${qrCodeMessage}`)
+    function processManualCode() {
+        const manualCode = document.getElementById("manualCodeInput").value.trim();
+        if (manualCode) {
+            fetchTicketDetails(manualCode);
+        } else {
+            document.getElementById("result").innerText = "Please enter a valid unique code.";
+        }
+    }
+
+    function fetchTicketDetails(ticketGuid) {
+        console.log(`Fetching details for: ${ticketGuid}`);
+
+        fetch(`/Home/GetTicketDetailsbyUniqueCode?ticketGuid=${encodeURIComponent(ticketGuid)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -23,31 +35,22 @@
                 return response.json();
             })
             .then(data => {
-                console.log("Fetched Data:", data); // Debug: Log the entire response
-
                 if (data) {
-                    // Check and populate each element
-                    const nameElement = document.getElementById('userName');
-                    const titleElement = document.getElementById('gatheringTitle');
-                    const dateElement = document.getElementById('registrationDate');
-                    const codeElement = document.getElementById('uniqueCode');
-
-                    if (nameElement) nameElement.innerText = data.userName || "N/A";
-                    if (titleElement) titleElement.innerText = data.gatheringTitle || "N/A";
-                    if (dateElement) dateElement.innerText = data.registrationDate || "N/A";
-                    if (codeElement) codeElement.innerText = data.uniqueCode || "N/A";
-
-                    // Show the ticket details section
-                    document.getElementById('ticketDetails').style.display = 'block';
+                    document.getElementById("ticketDetails").style.display = "block";
+                    document.getElementById("userName").innerText = data.userName;
+                    document.getElementById("gatheringTitle").innerText = data.gatheringTitle;
+                    document.getElementById("registrationDate").innerText = data.registrationDate;
+                    document.getElementById("uniqueCode").innerText = data.uniqueCode;
                 } else {
-                    document.getElementById('result').innerText = 'No ticket found.';
+                    document.getElementById("result").innerText = "No ticket found.";
                 }
             })
             .catch(error => {
-                console.error('Error fetching ticket details:', error);
-                document.getElementById('result').innerText = 'Error fetching ticket details.';
+                console.error("Error fetching ticket details:", error);
+                document.getElementById("result").innerText = "Error fetching ticket details.";
             });
     }
+
 
     function onScanError(errorMessage) {
         console.warn(`QR Code scan error: ${errorMessage}`);
@@ -85,6 +88,12 @@
     // Start scanning on page load
     startScanning();
 </script>
+<div style="margin-top: 20px;">
+    <label for="manualCodeInput">Enter Unique Code Manually:</label>
+    <input type="text" id="manualCodeInput" placeholder="e.g., 1-1-11/09/2024 15:43:58">
+    <button onclick="processManualCode()" class="btn btn-primary">Submit Code</button>
+</div>
+
 
 <div id="ticketDetails" style="display: none; margin-top: 20px;">
     <h4>Ticket Details</h4>
