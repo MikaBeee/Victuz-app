@@ -120,7 +120,7 @@ namespace Victuz.Controllers.DataController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, string name,  [Bind("RegistrationDate")] GatheringRegistration gatheringRegistration)
+        public async Task<IActionResult> Create(int id, string name, [Bind("RegistrationDate")] GatheringRegistration gatheringRegistration)
         {
             string redirectToCon;
             string redirectToPage;
@@ -128,7 +128,7 @@ namespace Victuz.Controllers.DataController
             gatheringRegistration.RegistrationDate = DateTime.Now;
             gatheringRegistration.GatheringId = id;
 
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 gatheringRegistration.UserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 redirectToCon = "Gatherings";
@@ -152,21 +152,41 @@ namespace Victuz.Controllers.DataController
                 redirectToPage = "Index";
             }
 
+            // Check if the gathering exists and has tickets left
+            var gathering = await _context.gathering
+                .Include(g =>  g.GatheringRegistrations)
+                .FirstOrDefaultAsync(g => g.GatheringId == id);
+
+            if (gathering == null)
+            {
+                return NotFound(); // Gathering not found
+            }
+
+            int ticketsleft = gathering.MaxParticipants - (gathering.GatheringRegistrations?.Count ?? 0);
+
+            if (ticketsleft < 1)
+            {
+                TempData["ErrorMessage"] = "Er zijn geen tickets meer beschikbaar voor deze activiteit.";
+                return RedirectToAction("Create", new { gatheringRegistration.GatheringId });
+            }
+
+            // Check if the user is already registered
             bool ticketExists = await _context.gatheringRegistration
-                    .AnyAsync(gr => gr.UserId == gatheringRegistration.UserId && gr.GatheringId == gatheringRegistration.GatheringId);
+                .AnyAsync(gr => gr.UserId == gatheringRegistration.UserId && gr.GatheringId == gatheringRegistration.GatheringId);
 
             if (ticketExists)
             {
                 TempData["ErrorMessage"] = "U heeft al een ticket voor deze activiteit";
-                return RedirectToAction("Create", new {gatheringRegistration.GatheringId});
+                return RedirectToAction("Create", new { gatheringRegistration.GatheringId });
             }
 
+            // Proceed with registration
             if (ModelState.IsValid)
-            {       
-                _context
-                    .Add(gatheringRegistration);
-                await _context
-                    .SaveChangesAsync();
+            {
+                _context.Add(gatheringRegistration);
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(redirectToPage, redirectToCon);
             }
 

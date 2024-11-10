@@ -24,6 +24,7 @@
 
                             <dd class="col-sm-9" style="font-size: large">@Html.DisplayFor(model => model.Category.CatName)</dd>
 
+                            <dd class="col-sm-9" style="font-size: large"> Tickets over: @Html.DisplayFor(model => model.TicketsLeft)/@Html.DisplayFor(model => model.MaxParticipants)</dd>
 
                             @if (!Convert.ToBoolean(Model.IsSuggested))
                             {
@@ -43,9 +44,20 @@
                                     }
                                     else
                                     {
-                                        <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
-                                            Inschrijven
-                                        </a>
+
+                                        @if(Model.TicketsLeft < 1)
+                                        {
+                                            <a class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
+                                                Vol!
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="GatheringRegistrations" asp-action="Create" asp-route-id="@Model.GatheringId" class="button text-white" style="font-size: 25px; font-weight: 600; display: block; width: 100%; padding: 20px; text-align: center; background-color: transparent; text-decoration: none; cursor: pointer; border: 2px solid transparent;">
+                                                Inschrijven
+                                            </a>
+                                        }
+                                        
                                     }
                                 </dd>
                             }

@@ -31,5 +31,7 @@ namespace Victuz.Models.Businesslayer
         public int VotesCount => Votes?.Count() ?? 0;
 
         public ICollection<GatheringRegistration>? GatheringRegistrations { get; set; }
+
+        public int TicketsLeft => MaxParticipants - (GatheringRegistrations?.Count ?? 0);
     }
 }

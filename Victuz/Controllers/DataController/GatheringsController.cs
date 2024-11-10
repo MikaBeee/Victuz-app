@@ -72,6 +72,8 @@ namespace Victuz.Controllers.DataController
                 ViewData["HasVoted"] = true; // User has voted
             }
 
+
+
             // Pass the registration status to the view
             ViewData["IsUserRegistered"] = isUserRegistered;
 
