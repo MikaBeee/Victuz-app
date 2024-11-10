@@ -103,3 +103,24 @@
     <button onclick="deleteTicket()" class="btn btn-danger" style="margin-top: 20px;">Delete Ticket</button>
     <div id="result" style="margin-top: 10px; color: red;"></div>
 </div>
+
+<script>
+    function deleteTicket() {
+        // Use the scannedTicketGuid to delete the ticket
+        fetch(`/Home/DeleteTicket?ticketGuid=${scannedTicketGuid}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete ticket.');
+                }
+                // Clear ticket details and hide the section
+                document.getElementById('ticketDetails').style.display = 'none';
+                document.getElementById('result').innerText = 'Ticket deleted successfully.';
+            })
+            .catch(error => {
+                console.error('Error deleting ticket:', error);
+                document.getElementById('result').innerText = 'Error deleting ticket.';
+            });
+    }
+</script>

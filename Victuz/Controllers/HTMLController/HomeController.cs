@@ -81,6 +81,8 @@ namespace Victuz.Controllers.HTMLController
         {
             return View();
         }
+
+        //GET ticket by unique qr code
         [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult GetTicketDetailsbyUniqueCode(string ticketGuid)
@@ -98,8 +100,8 @@ namespace Victuz.Controllers.HTMLController
 
             // Retrieve the ticket based on these values
             var ticket = _context.gatheringRegistration
-                .Include(gr => gr.User)      // Include the User related to the registration
-                .Include(gr => gr.Gathering) // Include the Gathering related to the registration
+                .Include(gr => gr.User)  
+                .Include(gr => gr.Gathering) 
                 .Where(gr => gr.GatheringId == gatheringId && gr.UserId == userId)
                 .Select(gr => new
                 {
@@ -113,11 +115,51 @@ namespace Victuz.Controllers.HTMLController
 
             if (ticket == null)
             {
-                return NotFound(); // Return 404 if ticket not found
+                return NotFound(); 
             }
 
-            return Ok(ticket); // Return the ticket details as JSON
+            return Ok(ticket); 
         }
+        [Authorize(Roles = "admin")]
+        [HttpDelete]
+        public IActionResult DeleteTicket(string ticketGuid)
+        {
+
+            string[] parts = ticketGuid.Split('-');
+            if (parts.Length != 3)
+            {
+                return BadRequest("Invalid ticket GUID format.");
+            }
+
+            if (!int.TryParse(parts[0], out int gatheringId) || !int.TryParse(parts[1], out int userId))
+            {
+                return BadRequest("Invalid ticket GUID format.");
+            }
+
+
+            if (!DateTime.TryParseExact(parts[2], "MM/dd/yyyy HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out DateTime registrationDate))
+            {
+                return BadRequest("Invalid registration date format.");
+            }
+
+
+            var ticket = _context.gatheringRegistration
+                .FirstOrDefault(gr => gr.GatheringId == gatheringId && gr.UserId == userId);
+
+            if (ticket == null)
+            {
+                return NotFound("Ticket not found.");
+            }
+
+ 
+            _context.gatheringRegistration.Remove(ticket);
+            _context.SaveChanges();
+
+            return Ok("Ticket deleted successfully."); 
+        }
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode = null)
